@@ -1,0 +1,65 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf810
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgenericrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww20840\viewh14660\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf2 older renditions were: time;x;y;heading;velocity;accel;throttle;steering\
+\
+the file smoothdata100 contains workspaces for each trial on jan 25th with structured as a 32xdatasize array containing:\
+\
+1. time [time]\
+\
+2. x positition (mocap) [posmocapI(1,:)]\
+3. y position (mocap) [posmocapI(2,:)]\
+\
+4. distance (mocap) [distancemocapI]\
+\
+5. speed (mocap) [speedmocapI] (note speed is signed the same as longitudinal velocity)\
+6. smooth speed (mocap) [speedmocapIS] (note speed is signed the same as longitudinal velocity)\
+7. longitudinal velocity (mocap) [longvelocitymocapI]\
+8. smooth longitudinal velocity (mocap) [longvelocitymocapIS]\
+9. lateral velocity (mocap) [latvelocitymocapI]\
+10. smooth lateral velocity (mocap) [latvelocitymocapIS]\
+\
+\
+11. longitudinal acceleration (imu) [accellongimuCI]\
+12. smooth longitudinal acceleration (imu) [accellongimuCIS]\
+13. lateral acceleration (imu) [accellatimuCI]\
+14. smooth lateral acceleration (imu) [accellatimuCIS]\
+\
+15. longitudinal acceleration (mocap) [accellongmocapI]\
+16. smooth longitudinal acceleration (mocap) [accellongmocapIS]\
+17. lateral acceleration (mocap) [accellatmocapI]\
+18. smooth lateral acceleration (mocap) [accellatmocapIS]\
+\
+19. heading (mocap) [headingmocapI]\
+20. smooth heading (mocap) [headingmocapSI]\
+21. Sideslip angle (mocap) [sideslipmocapI]\
+22. smooth sideslip angle [sideslipmocapIS]\
+\
+23. yaw rate (imu) [yawrateimuI]\
+24. smoothed yaw rate (imu) [yawrateimuIS]\
+25. yaw rate (mocap) [yawratemocapI]\
+26. smooth yaw rate (mocap) [yawratemocapIS]\
+27. sideslip derivative (mocap) [sideslipmocapdtI]\
+28 smooth sideslip derivative (mocap) [sideslipmocapdtIS]\
+\
+\
+29. Throttle (rc) [throttlerc]\
+30. Smooth throttle (rc) [throttlercS]\
+31. Steering (rc) [steeringrc]\
+32. Smooth steering (rc) [steeringrcS]\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+Notes:\
+-unsmooth data for acceleration is extremely noisy I wouldn\'92t use it, you can probably get away with using the unsmooth velocity data\
+-all position data is smoothed\
+-the data for sideslip angle seems to be bad after the rover has stopped moving, need to reprocess this manually. This is done and stored in \'91smoothdata100post.mat\'92. For this I just picked an index after it settled down and maintained that value to the end of the run. This just erased the jumpy data that occurred while the car was slowing to 0 velocity. \
+-\'91smoothdata100postalternative\'92 has some trials that are time delayed or repeated to help with polynomial fitting\
+\
+\
+\
+\
+}
