@@ -26,7 +26,7 @@ for i=1:length(cag)
 
 p0=[2.759,1.5,.18,.29,cag(i),1]';
 user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub) ;
-[sol(i),~] = user.modelFit(2) ;
+[sol(i),~] = user.modelFit() ;
 
 end
 toc
