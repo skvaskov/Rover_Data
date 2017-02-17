@@ -1,6 +1,6 @@
 function [dzdt, dfdz, dfdp] = rajamanireduced(z,u,p)
   B=z(1);%sideslip
-   r=z(2);%yaw rate 
+   w=z(2);%yaw rate 
 m=p(1); %mass
 Iz=p(2); %moment of inertia
 lf=p(3); %lf (length of center of gravity from front wheel)

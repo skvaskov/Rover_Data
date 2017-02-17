@@ -1,11 +1,11 @@
 %simulate results for random inputs
-load('smoothdata100.mat')
+load('smoothdata100imutime.mat')
 
 trial=processeddata17;
 start=1;
 fin=150;
 tvec=trial(1,start:fin);
-uvec=[steeringmodel(-trial(32,start:fin));trial(8,start:fin)];
+uvec=[steeringmodel(trial(32,start:fin));trial(8,start:fin)];
 
 
  l=.29;
@@ -19,7 +19,7 @@ lflb=.1585;
 
 p=[m,Izg,lf,l,6,1]';
 
-fdyn=@lygeros;
+fdyn=@rajamani;
 x0=[trial([2 3 20 10 26],1)];
 
 [simx, simdxdt, simdfdx, simdfdp]=simulateDynamicsWithInput(fdyn,tvec,uvec,x0,p);
@@ -31,36 +31,28 @@ x0=[trial([2 3 20 10 26],1)];
 % xlabel('X')
 % ylabel('Y')
 % legend('simulated','actual')
-    figure
-subplot(4,1,1)
+    
+subplot(3,1,1)
 plot(simx(1,:),simx(2,:))
 hold on
-plot(trial(2,:),trial(3,:))
+plot(trial(2,:),trial(10,:))
 xlabel('X')
 ylabel('Y')
 legend('simulated','actual')
 
-subplot(4,1,2)
-plot(tvec,simx(3,:))
+subplot(3,1,2)
+plot(tvec,simx(2,:))
 hold on
-plot(trial(1,:),trial(20,:))
+plot(trial(1,:),trial(26,:))
 xlabel('time (s)')
 ylabel('heading')
 legend('simulated','actual')
 
-subplot(4,1,3)
+subplot(3,1,3)
 plot(tvec,simx(4,:))
 hold on
-plot(trial(1,:),trial(10,:))
-xlabel('time (s)')
-ylabel('lat v')
-legend('simulated','actual')
+plot(trial(1,:),trial(22,:))
+ylabel('input')
+legend('steering','throttle')
 
-subplot(4,1,4)
-plot(tvec,simx(5,:))
-hold on
-plot(trial(1,:),trial(26,:))
-xlabel('time (s)')
-ylabel('yaw rate')
-legend('simulated','actual')
 % 
