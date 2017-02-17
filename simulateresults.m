@@ -1,14 +1,14 @@
 %simulate results for random inputs
-load('smoothdata100.mat')
+load('smoothdata100imutime.mat')
 
-trial=processeddata17;
+trial=processeddata25;
 start=1;
 fin=150;
 tvec=trial(1,start:fin);
-uvec=[steeringmodel(-trial(32,start:fin));trial(8,start:fin)];
+uvec=[steeringmodel(trial(32,start:fin));trial(8,start:fin)];
 
 
- l=.29;
+l=.29;
 lf=.18;
 m=2.759;
 w=.3;
@@ -17,9 +17,9 @@ Izg=2.759/12*l^2;
 lflb=.1585;
 
 
-p=[m,Izg,lf,l,6,1]';
+p=[m,1.5,1.8,2.8,6,1]';
 
-fdyn=@lygeros;
+fdyn=@lygerostan;
 x0=[trial([2 3 20 10 26],1)];
 
 [simx, simdxdt, simdfdx, simdfdp]=simulateDynamicsWithInput(fdyn,tvec,uvec,x0,p);

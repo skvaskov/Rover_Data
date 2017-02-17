@@ -1,4 +1,4 @@
-function [dzdt,dfdz,dfdp]=lygeros(z,u,p)
+function [dzdt,dfdz,dfdp]=lygerostan(z,u,p)
 %states
 X=z(1);
 Y=z(2);
@@ -7,9 +7,9 @@ vy=z(4);%lateral velocity
 w=z(5);%yaw rate
 
 m=p(1); %mass
-Iz=p(2); %moment of inertia
-lf=p(3); %lf (length of center of gravity from front wheel)
-l=p(4);  %wheelbase length
+Iz=p(2)/100; %moment of inertia
+lf=p(3)/10; %lf (length of center of gravity from front wheel)
+l=p(4)/10;  %wheelbase length
 ca=p(5); %cornering stifness
 pr=p(6);%scaling factor for rear tire stifness
 
