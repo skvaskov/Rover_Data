@@ -1,35 +1,26 @@
 clear
 clc
 %%
-syms X Y H VY VX r m cm1 cm2 cd cr Iz lf l car caf pca p2 u1 u2 real
+syms x y psi B vy vx r d m cm1 cm2 cd cr Iz lf l car caf ca pr p2 u1 u2 v w real
 syms x_0 v_0 real
-x = [VY r]' ;
-p = [m Iz lf l car pca]';
-b = atan((l-lf)/l*tan(u1)) ;
-car=pca*caf;
-Fyr=car*atan((r*(l-lf)-VY)/u2);
-Fyf=caf*atan((u1-(r*lf+VY)/u2));
-Fxr=(cm1-cm2*VX)*p2*u2-cr-cd*VX^2;
+x = [x y psi vy w]' ;
+p = [m,Iz,lf,l,ca,pr]';
+%b = atan((l-lf)/l*tan(d));
+
+ Fyr=pr*ca*(w*(l-lf)-vy)/vx;
+ Fyf=ca*(d-(w*lf+vy)/vx);
+% Fxr=(cm1-cm2*VX)*p2*u2-cr-cd*VX^2;
 
 %%
-% f = [u2*cos(H)-VY*sin(H);...
-%     u2*sin(H)-VY*cos(H);...
-%     r;...
-%     1/m*(Fyr+Fyf*cos(p1*u1)-m*u2*r);...
-%     1/Iz*(Fyf*lf*cos(p1*u1)-Fyr*(l-lf))];
-
-f = [1/m*(Fyr+Fyf*cos(u1)-m*u2*r);...
-    1/Iz*(Fyf*lf*cos(u1)-Fyr*(l-lf))];
+f=[vx*cos(psi)-vy*sin(psi);
+    vx*sin(psi)+vy*cos(psi);...
+    w;...
+    (1/m)*(Fyr+Fyf*cos(d)-m*vx*w);...
+    (1/Iz)*(Fyf*lf*cos(d)-Fyr*(l-lf))];
 % 
-%  f = [VX/cos(b)*cos(H+b);...
-%      VX/cos(b)*sin(H+b);...
-%       VX/l*tan(p1*u1);...
-%      1/m*(Fxr-Fyf*sin(p1*u1)+m*VX*tan(b)*VX/l*tan(p1*u1))];
 
-% f=[VX;1/m*Fxr];
- 
 %%
-f=simplify(f);
+%f=simplify(f);
 dfdx = simplify(jacobian(f,x)) ;
 %%
 dfdp = simplify(jacobian(f,p)) ;
