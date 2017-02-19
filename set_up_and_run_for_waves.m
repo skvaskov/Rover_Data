@@ -1,4 +1,4 @@
-clear
+clear all
 clc
 
 datastruct = load('smoothdata100imutime.mat') ;
@@ -17,16 +17,32 @@ for idx = 1:length(tarray)
 end
 
 fdyn = @lygerostan;
-cag=[1 5 10 50 100 1000];
+
+cag=[.1 1];
 pub=[2.762,300,2.8,3,100000,1.5]';
 plb=[2.756,0,1.585,2.8,0,.5]';
+psol=zeros(length(cag),6);
+xsol=zeros(5,length(tarray)*(done-start+1),length(cag));
+optsol=zeros(length(cag),2);
+
 
 tic
 for i=1:length(cag)
 
 p0=[2.759,1.5,.18,.29,cag(i),1]';
 user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub) ;
+<<<<<<< HEAD
 [sol(i),~] = user.modelFit() ;
+=======
+>>>>>>> master
 
+[sol,~] = user.modelFit(2) ;
+xsol(:,:,i)=sol.x;
+psol(i,:)=sol.p;
+optsol(i,:)=[sol.output.firstorderopt, sol.finalCost];
 end
 toc
+clearvars -except xsol psol optsol
+save(['sol.mat'])
+
+

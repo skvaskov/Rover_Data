@@ -7,7 +7,9 @@ data = {} ;
 input = {} ;
 t = {} ;
 start=1;
-done=200;
+done=150;
+
+
 
 for idx = 1:length(tarray)
     trial = datastruct.(['processeddata' num2str(tarray(idx))]) ;
@@ -30,7 +32,8 @@ Izub=2.759/12*(l^2+w^2);
 Izg=2.759/12*l^2;
 lflb=.1585;
 
-p0=[m,Izg,lf,l,1,1]';
+p0=[m,Izg*100,lf,l,6,1]';
+
 pub=[2.762,3,.28,.3,10000,1.5]';
 plb=[2.756,0,.1585,.28,0,.5]';
 scale=[1/10;1/10;1/10;1;1];
