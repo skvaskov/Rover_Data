@@ -1,6 +1,6 @@
 user.verbose=1;
 tic
-[sol,prob] = user.modelFit(2) ;
+[sol,prob] = user.modelFit() ;
 toc
 
 disp(['Param fit: ', mat2str(sol.p)])

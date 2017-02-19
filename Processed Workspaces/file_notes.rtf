@@ -6,7 +6,6 @@
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\fs24 \cf2 \
-\
 the file smoothdata100imutime contains workspaces for each trial on jan 25th with structured as a 32xdatasize array containing:\
 \
 1. time [time]\
@@ -51,13 +50,11 @@ the file smoothdata100imutime contains workspaces for each trial on jan 25th wit
 30. Smooth throttle (rc) [throttlercS]\
 31. Steering (rc) [steeringrc]\
 32. Smooth steering (rc) [steeringrcS]\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 Notes:\
 -unsmooth data for acceleration is extremely noisy I wouldn\'92t use it, you can probably get away with using the unsmooth velocity data\
 -all position data is smoothed\
--the data for sideslip angle seems to be bad after the rover has stopped moving, need to reprocess this manually. For this I just picked an index after it settled down and maintained that value to the end of the run. This just erased the jumpy data that occurred while the car was slowing to 0 velocity. \
-\
+-the data for sideslip is wacky around vx=0\
 \
 \
 \
