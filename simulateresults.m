@@ -1,7 +1,7 @@
 %simulate results for random inputs
 load('smoothdata100imutime.mat')
 
-trial=processeddata25;
+trial=processeddata17;
 start=1;
 fin=150;
 tvec=trial(1,start:fin);
@@ -17,7 +17,7 @@ Izg=2.759/12*l^2;
 lflb=.1585;
 
 
-p=[m,1.5,1.8,2.8,6,1]';
+p=[m,1,1.8,2.8,6,1]';
 
 fdyn=@lygerostan;
 x0=[trial([2 3 20 10 26],1)];
