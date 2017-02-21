@@ -3,7 +3,7 @@
 %load workspace for trial with the following contents/format:
 clear all
 
-load(['trial22_4-jan-2017.mat'])
+load(['trial17_4-jan-2017.mat'])
 
 %all imported data will be in columns
 
@@ -384,7 +384,7 @@ hold off
 %% 
 %Define variable containing data you want to use for sysID and clear other
 %variables see text file for order
-processeddata22=[time';posmocapI(1,:);posmocapI(2,:);distancemocapI;...
+processeddata17=[time';posmocapI(1,:);posmocapI(2,:);distancemocapI;...
     speedmocapI;speedmocapIS;longvelocitymocapI;longvelocitymocapIS;latvelocitymocapI;latvelocitymocapIS;...
     accellongimuCI;accellongimuCIS;accellatimuCI;accellatimuCIS;...
     accellongmocapI;accellongmocapIS;accellatmocapI;accellatmocapIS;...

@@ -217,9 +217,8 @@ classdef nonlinearModelFit
             [x,~] = user.statedecode(z) ;
             
             %scale both simulated states and data
-            
-            s=user.scaling;
-            
+            n=sum(user.Ndata);
+            s=repmat(user.scaling,1,n);
             % Zero out the states that don't need to be tracked
             x(user.x2omit,:) = 0 ;
             d=user.data;
