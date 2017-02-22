@@ -18,7 +18,7 @@ end
 
 fdyn = @lygerostan;
 
-cag=[.1 1];
+cag=[.01 .1 1 10 100 1000];
 pub=[2.762,300,2.8,3,100000,1.5]';
 plb=[2.756,0,1.585,2.8,0,.5]';
 psol=zeros(length(cag),6);
@@ -29,6 +29,7 @@ optsol=zeros(length(cag),2);
 tic
 for i=1:length(cag)
 
+<<<<<<< HEAD
 p0=[2.759,1.5,1.8,2.9,cag(i),1]';
 user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub) ;
 <<<<<<< HEAD
@@ -37,6 +38,12 @@ user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub) ;
 >>>>>>> master
 
 [sol,~] = user.modelFit(2) ;
+=======
+p0=[2.759,.1,1.8,2.9,cag(i),1]';
+user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub,'x2track',[4,5]) ;
+user.verbose=1;
+[sol,~] = user.modelFit() ;
+>>>>>>> master
 xsol(:,:,i)=sol.x;
 psol(i,:)=sol.p;
 optsol(i,:)=[sol.output.firstorderopt, sol.finalCost];
