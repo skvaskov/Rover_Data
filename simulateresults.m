@@ -22,7 +22,7 @@ p=[m,1,1.8,2.8,6,1]';
 fdyn=@lygerostan;
 x0=[trial([2 3 20 10 26],1)];
 
-[simx, simdxdt, simdfdx, simdfdp]=simulateDynamicsWithInput(fdyn,tvec,uvec,x0,p);
+[simx, simdxdt, simdfdx, simdfdp]=simulateDynamicsWithInput(fdyn,tvec,uvec,x0,psol(1,:));
 
 % subplot(4,1,1)
 % plot(simx(1,:),simx(2,:))
