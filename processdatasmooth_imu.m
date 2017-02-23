@@ -1,4 +1,4 @@
-%% 
+ou%% 
 %clear all then
 %load workspace for trial with the following contents/format:
 clear all
