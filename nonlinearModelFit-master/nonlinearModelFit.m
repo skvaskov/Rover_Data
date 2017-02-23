@@ -174,6 +174,8 @@ classdef nonlinearModelFit
             if nargin < 2
                 max_iterations = 100000 ;
             end
+              options.MaxIterations = max_iterations ;
+            %options.MaxFunEvals= user.Nparams*max_iterations;
             
             % Set up options
             if user.verbose
@@ -183,8 +185,7 @@ classdef nonlinearModelFit
                 options = optimoptions('fmincon','GradObj','on','GradCons','on',...
                                        'Algorithm','interior-point') ;
             end
-            options.MaxIterations = max_iterations ;
-            options.MaxFunEvals= user.Nparams*max_iterations;
+          
             
             % Create problem object to pass to fmincon
             problem.objective = @user.cost ;

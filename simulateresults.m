@@ -17,12 +17,12 @@ Izg=2.759/12*l^2;
 lflb=.1585;
 
 
-p=[m,1,1.8,2.8,6,1]';
+p=[m,10,1.8,2.8,5,1]';
 
 fdyn=@lygerostan;
 x0=[trial([2 3 20 10 26],1)];
 
-[simx, simdxdt, simdfdx, simdfdp]=simulateDynamicsWithInput(fdyn,tvec,uvec,x0,psol(1,:));
+[simx, simdxdt, simdfdx, simdfdp]=simulateDynamicsWithInput(fdyn,tvec,uvec,x0,p);
 
 % subplot(4,1,1)
 % plot(simx(1,:),simx(2,:))
