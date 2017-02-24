@@ -32,12 +32,12 @@ Izub=2.759/12*(l^2+w^2);
 Izg=2.759/12*l^2;
 lflb=.1585;
 
-p0=[m,1,1.8,2.8,6,1]';
+p0=[m,.5,1.8,2.9,.5,1]';
 
-pub=[2.762,3,.28,.3,10000,1.5]';
-plb=[2.756,0,.1585,.28,0,.5]';
+pub=[2.762,3000,2.8,3,10000,1.5]';
+plb=[2.756,0,1.585,2.8,0,.5]';
 scale=[1/10;1/10;1/10;1;1];
 
 
-user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub) ;
+user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub,'x2track',[4 5]) ;
 

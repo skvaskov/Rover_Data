@@ -7,15 +7,15 @@ x = [x y psi vy w]' ;
 p = [m,Iz,lf,l,ca,pr]';
 %b = atan((l-lf)/l*tan(d));
 
- Fyr=pr*ca*(w*(l-lf)-vy)/vx;
- Fyf=ca*(d-(w*lf+vy)/vx);
+ Fyr=pr*ca*atan((w*(l-lf)-vy)/vx);
+ Fyf=ca*atan((d-(w*lf+vy)/vx));
 % Fxr=(cm1-cm2*VX)*p2*u2-cr-cd*VX^2;
 
 %%
 f=[vx*cos(psi)-vy*sin(psi);
     vx*sin(psi)+vy*cos(psi);...
     w;...
-    (1/m)*(Fyr+Fyf*cos(d)-m*vx*w);...
+    (1/m)*(Fyr+Fyf*cos(d));...
     (1/Iz)*(Fyf*lf*cos(d)-Fyr*(l-lf))];
 % 
 
