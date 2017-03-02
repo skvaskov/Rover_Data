@@ -174,8 +174,7 @@ classdef nonlinearModelFit
             if nargin < 2
                 max_iterations = 100000 ;
             end
-              options.MaxIterations = max_iterations ;
-            %options.MaxFunEvals= user.Nparams*max_iterations;
+
             
             % Set up options
             if user.verbose
@@ -185,7 +184,8 @@ classdef nonlinearModelFit
                 options = optimoptions('fmincon','GradObj','on','GradCons','on',...
                                        'Algorithm','interior-point') ;
             end
-          
+            options.MaxIterations = max_iterations ;
+            options.MaxFunctionEvaluations= 5*max_iterations;
             
             % Create problem object to pass to fmincon
             problem.objective = @user.cost ;
@@ -225,8 +225,8 @@ classdef nonlinearModelFit
             d=user.data;
             sx=s.*x;
             sd=s.*d;
-            c = (sum((sx(:)-sd(:)).^2)) ;
-            gc = [2.*(sx(:)-sd(:))', zeros(1,user.Nparams)] ;
+            c = sum((sx(:)-sd(:)).^2) ;
+            gc = [2*(sx(:)-sd(:))', zeros(1,user.Nparams)] ;
         end
 
         function [cons,eq,gcons,geq] = nonlinearConstraints(user,z)
@@ -259,14 +259,22 @@ classdef nonlinearModelFit
             % Enforce that x(k+1) = x(k) + f(x(k)).*dt(k)
             eq = x(:,2:N) - x(:,1:N-1) - repmat(user.dt(1:N-1),Ns,1).*dxdt(:,1:N-1) ;
             
-            % Zero out the beginning of each trial
-            Ncum = cumsum(user.Ndata) ;
-            eq(:,Ncum(1:end-1)) = 0 ;
             
-            % Transform constraint violations into a row vector and add
-            % zero padding at the beginning for the first trial's initial
+            % Zero out the end of each trial
+            Ncum = cumsum(user.Ndata) ;
+            eq(:,Ncum(1:end-1)) = 0;
+            
+            % add zero padding at the beginning for the first trial's initial
             % condition
-            eq = [zeros(1,Ns), eq(:)'] ;
+            eq = [zeros(Ns,1), eq] ;
+            
+           
+            
+            %transform eq into row vector
+            eq=eq(:);
+            
+            %Add constraints enforcing that the initial condition for each
+            %trial are equal to the data
             
         % Calculate the equality constraint gradient           
             % Reshape dfdx
@@ -326,7 +334,7 @@ classdef nonlinearModelFit
                     % leave the gradients as zero
                     trialCounter = trialCounter + 1 ;
                 else
-                    % fill in the matrices!
+%                     % fill in the matrices!
                     dxdt(:,idx) = dxdtPoint ;
                     dfdx(:,:,idx) = dfdxPoint ;
                     dfdp(:,:,idx) = dfdpPoint ;
@@ -336,7 +344,7 @@ classdef nonlinearModelFit
             end
         end
         
-        function [x, dxdt, dfdx, dfdp] = forwardSimulateDynamics(user,p)
+       function [x, dxdt, dfdx, dfdp] = forwardSimulateDynamics(user,p)
         % This is nearly the same as evaluate dynamics, but x is not
         % provided; for some system parameters p, simulate the system and
         % return the trajectory, dx/dt, and the gradients of the dynamics
@@ -358,9 +366,9 @@ classdef nonlinearModelFit
             dxdt(:,1) = dxdtPoint ;
             dfdx(:,:,1) = dfdxPoint ;
             dfdp(:,:,1) = dfdpPoint ;
-            
+            Ndt=cumsum(user.Ndata);
             for idx = 2:Nd
-                    if idx == user.Ndata(trialCounter) + 1
+                    if idx == Ndt(trialCounter) + 1
                         % if we have hit the start of a trial, don't
                         % forward-simulate the dynamics
                         trialCounter = trialCounter + 1 ;
@@ -379,16 +387,30 @@ classdef nonlinearModelFit
         function [x,p] = statedecode(user,z)
         % Given the decision variables vector z, return the state of the
         % system and the current parameters
-           Ns = user.Nstates ;
-           Np = user.Nparams ;
-           Nd = user.Ndata ;
-           x = reshape(z(1:end-Np),Ns,sum(Nd)) ;
-           p = z(end-Np+1:end) ;
+           Ns = user.Nstates;
+           Np = user.Nparams;
+           Nd = user.Ndata;
+           Ndt = cumsum(Nd);
+           x = reshape(z(1:end-Np),Ns,sum(Nd));
+           %augment z with initial points
+%            x=[user.data(:,1),x];
+%            for i=1:(length(Ndt)-1)
+%                x=[x(:,1:Ndt(i)),user.data(:,Ndt(i)+1),x(:,Ndt(i)+1:end)];
+%            end
+           
+           p = z(end-Np+1:end);
         end
 
-        function z = stateencode(~,x,p)
+        function z = stateencode(user,x,p)
         % Given the state at and the current parameters p, return an
-        % updated decision variable vector z
+        % updated decision variable vector z.
+%            Nd = user.Ndata;
+%            Ndt = cumsum(Nd);
+%            %remove initial conditions from x
+%            x=x(:,2:end);
+%             for i=1:(length(Ndt)-1)
+%             x=[x(:,1:Ndt(i)-i),x(:,Ndt(i)-i+2:end)];
+%            end
            z = [x(:);p] ;
         end
     end

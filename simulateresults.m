@@ -1,9 +1,9 @@
 %simulate results for random inputs
 load('smoothdata100imutime.mat')
 
-trial=processeddata17;
+trial=processeddata22;
 start=1;
-fin=150;
+fin=200;
 tvec=trial(1,start:fin)-trial(1,start);
 
 uvec=[steeringmodel(trial(32,start:fin));trial(8,start:fin)];
@@ -20,16 +20,16 @@ Izub=2.759/12*(l^2+w^2);
 lflb=.1585;
 
 
-p=[m,Izg,1.8,2.8,cag,1]';
+p=[m,Izg,1.8,2.9,cag,1]';
 
 
 fdyn=@lygerostan;
 
 x0=trial([2 3 20 10 26],start);
 
-[simx, simdxdt, simdfdx, simdfdp]=simulateDynamicsWithInput(fdyn,tvec,uvec,x0,psol(4,:));
+[simx, simdxdt, simdfdx, simdfdp]=simulateDynamicsWithInput(fdyn,tvec,uvec,x0,p);
 
-    figure
+figure
 subplot(4,1,1)
 plot(simx(1,:),simx(2,:))
 hold on
