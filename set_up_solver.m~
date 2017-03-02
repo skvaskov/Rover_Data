@@ -2,7 +2,7 @@ clear
 clc
 
 datastruct = load('smoothdata100imutime.mat') ;
-tarray=1:9;
+tarray=1;
 data = {} ;
 input = {} ;
 t = {} ;
@@ -13,9 +13,9 @@ done=50;
 
 for idx = 1:length(tarray)
     trial = datastruct.(['crop_' num2str(tarray(idx))]) ;
-    data{idx} = trial([2,3,20,10,26],1:10);
-    input{idx} = [steeringmodel(trial(32,1:10));trial(8,1:10)];
-    t{idx} = trial(1,1:10); 
+    data{idx} = trial([2,3,20,10,26],start:done);
+    input{idx} = [steeringmodel(trial(32,start:done));trial(8,start:done)];
+    t{idx} = trial(1,start:done); 
 end
 
 %masses of rover components: rover 2.470 kg, floureon battery 0.289 kg, lrp
