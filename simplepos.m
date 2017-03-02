@@ -1,6 +1,8 @@
 function [dzdt,dfdz,dudp] = simplepos(z,u,p)
-%u1 heading u2 velocity x u3 B
-dzdt=[u(2)*cos(u(1))-u(2)*tan(u(3))*sin(u(1));u(2)*sin(u(1))+u(2)*tan(u(3))*cos(u(1))];
+psi=u(1);
+vx=u(2);
+vy=u(3);
+dzdt=[vx*cos(psi)-vy*sin(psi);vx*sin(psi)+vy*cos(psi)];
 
 dfdz=[0,0;0,0];
 

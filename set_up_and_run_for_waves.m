@@ -2,7 +2,7 @@ clear all
 clc
 
 datastruct = load('smoothdata100imutime.mat') ;
-tarray=[17 22 25 10];
+tarray=[22];
 data = {} ;
 input = {} ;
 t = {} ;
@@ -18,8 +18,8 @@ end
 
 fdyn = @lygerostan;
 
-cag=[.05,.1,.5,1,.5,1,5,5,10,25,50,25,50,10];
-Izg=[.1,.1,.1,.1,1,1,1,10,10,10,10,100,100,1000];
+cag=[.5,2,10,15];
+Izg=[.5,.5,.5,.5];
 pub=[2.762,3000,2.8,3,100000,1.5]';
 plb=[2.756,0,1.585,2.8,0,.5]';
 psol=zeros(length(cag),6);
@@ -30,7 +30,7 @@ tic
 for i=1:length(cag)
     
 p0=[2.759,Izg(i),1.8,2.9,cag(i),1]';
-user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub,'x2track',[4,5]) ;
+user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub) ;
 user.verbose=1;
 [sol,~] = user.modelFit() ;
 xsol(:,:,i)=sol.x;
