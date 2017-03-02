@@ -1,6 +1,6 @@
 user.verbose=1;
 tic
-[sol,prob] = user.modelFit() ;
+[sol,prob] = user.modelFit(5000) ;
 toc
 
 disp(['Param fit: ', mat2str(sol.p)])
@@ -9,7 +9,7 @@ disp(['Hess norm: ', num2str(norm(sol.hessian))])
 
 %%
 load('smoothdata100imutime.mat')
-trialplot=processeddata22;
+trialplot=processeddata10;
 start=1;
 done=65;
 tvec=trialplot(1,start:done)-trialplot(1,start);
