@@ -22,9 +22,10 @@ cag=[.5,2,10,15,.5,2,10,15];
 Izg=[.5,.5,.5,.5,1,1,1,1];
 pub=[2.762,3000,2.8,3,100000,1.5]';
 plb=[2.756,0,1.585,2.8,0,.5]';
-psol=zeros(length(cag),6);
-xsol=zeros(5,length(tarray)*(done-start+1),length(cag));
-optsol=zeros(length(cag),2);
+% psol=zeros(length(cag),6);
+% xsol=zeros(user.Nstates,sum(user.Ndata),length(cag));
+% optsol=zeros(length(cag),2);
+
 tic
 
 for i=1:length(cag)
@@ -32,7 +33,7 @@ for i=1:length(cag)
 p0=[2.759,Izg(i),1.8,2.9,cag(i),1]';
 user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub) ;
 user.verbose=1;
-[sol,~] = user.modelFit() ;
+[sol,~] = user.modelFit(2) ;
 xsol(:,:,i)=sol.x;
 psol(i,:)=sol.p;
 optsol(i,:)=[sol.output.firstorderopt, sol.finalCost];

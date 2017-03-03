@@ -185,7 +185,7 @@ classdef nonlinearModelFit
                                        'Algorithm','interior-point' ) ;
             end
             options.MaxIterations = max_iterations ;
-            options.MaxFunctionEvaluations= max_iterations;
+            options.MaxFunctionEvaluations= 2*user.Nstates*max_iterations;
             
             % Create problem object to pass to fmincon
             problem.objective = @user.cost ;
@@ -272,7 +272,7 @@ classdef nonlinearModelFit
             %add equality constraints for initial conditions of each trial
             Ndt=cumsum(Nd);
             init=[1,Ndt(1:end-1)+1];
-            eqinit=x(:,init)-user.data(:,init);
+            eqinit=(x(:,init)-user.data(:,init));
             eq=[eqinit,eq];
             
             %transform eq into row vector
