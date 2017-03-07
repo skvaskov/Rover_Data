@@ -9,7 +9,7 @@ disp(['Hess norm: ', num2str(norm(sol.hessian))])
 
 %%
 load('smoothdata100imutime.mat')
-trialplot=processeddata10;
+trialplot=processeddata22;
 start=25;
 done=150;
 tvec=trialplot(1,start:done)-trialplot(1,start);

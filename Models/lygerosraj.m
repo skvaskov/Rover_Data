@@ -1,6 +1,5 @@
 function [dzdt,dfdz,dfdp]=lygerosraj(z,u,p)
 %states
-
 x=z(1);
 y=z(2);
 psi=z(3);%heading
