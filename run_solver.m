@@ -9,8 +9,8 @@ disp(['Hess norm: ', num2str(norm(sol.hessian))])
 
 %%
 load('smoothdata100imutime.mat')
-trialplot=processeddata22;
-start=1;
+trialplot=processeddata10;
+start=25;
 done=150;
 tvec=trialplot(1,start:done)-trialplot(1,start);
 uvec=[steeringmodel(trialplot(32,start:done));trialplot(8,start:done)];

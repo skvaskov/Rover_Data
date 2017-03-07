@@ -1,31 +1,37 @@
 function [dzdt, dfdz, dfdp]=motor(z,u,p)
 %parameters
-J=p(1); %moment of inertia of rotor kg.ms^2
-b=p(2); %motor viscous friction constant N.m.s
-ke=p(3); %electromotive force constant V/rad/sec
-kt=p(4); %motor torque constant N.m/amp
-R=p(5); %electric resistance ohm
-L=p(6); %electric inductance H
-r=p(7); % tire radius
-cr=p(8);% rolling resistance
-p2=p(9);% scaling for input
+m=p(1);
+J=p(2); %moment of inertia of rotor kg.ms^2
+b=p(3); %motor viscous friction constant N.m.s
+ke=p(4); %electromotive force constant V/rad/sec
+kt=p(5); %motor torque constant N.m/amp
+R=p(6); %electric resistance ohm
+L=p(7); %electric inductance H
+r=p(8); % tire radius
+gr=p(9);%gear ratio
+cr=p(10);% rolling resistance
+cd=p(11);% drag coefficent
 
 %states
-v=z(1); %velocity (assuming rwos)
-ic=z(2); %current
+x=z(1);%distance
+vx=z(2); %velocity (assuming rwos)
+i=z(3); %current
 %input
-Volt=u(1); %voltage
+V=u(1); %voltage
 
-dzdt=[          -(J*cr + b*v - ic*kt*r)/J;...
- -(ke*v + R*ic*r - Volt*p2*r)/(L*r)];
+dzdt=[                                          vx;...
+ - cd*vx^2 - (b*vx)/J - cr/m + (gr*i*kt*r)/J;...
+            V/L - (R*i)/L - (ke*vx)/(L*gr*r)];
 
-dfdz=[-b/J, (kt*r)/J;...
--ke/(L*r),     -R/L];
 
-dfdp=[ (b*v - ic*kt*r)/J^2, -v/J,        0, (ic*r)/J,     0,                                   0,      (ic*kt)/J, -1,      0;...
-                0,    0, -v/(L*r),        0, -ic/L, (ke*v + R*ic*r - Volt*p2*r)/(L^2*r), (ke*v)/(L*r^2),  0, Volt/L];
+dfdz=[  0,               1,           0;...
+ 0, - 2*cd*vx - b/J, (gr*kt*r)/J;...
+ 0,    -ke/(L*gr*r),        -R/L];
+
+dfdp=[      0,                      0,     0,            0,          0,    0,                                      0,                  0,                  0,    0,     0;...
+ cr/m^2, (b*vx - gr*i*kt*r)/J^2, -vx/J,            0, (gr*i*r)/J,    0,                                      0,        (gr*i*kt)/J,         (i*kt*r)/J, -1/m, -vx^2;...
+      0,                      0,     0, -vx/(L*gr*r),          0, -i/L, (ke*vx - V*gr*r + R*gr*i*r)/(L^2*gr*r), (ke*vx)/(L*gr*r^2), (ke*vx)/(L*gr^2*r),    0,     0];
  
-
 
 
 
