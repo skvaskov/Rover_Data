@@ -3,8 +3,8 @@ clc
 %%
 syms x y psi B vy vx r d m cm1 cm2 cd cr Iz lf l car caf ca pr p2 u1 u2 v w real
 syms x_0 v_0 real
-x = [x y psi vy w]' ;
-p = [m,Iz,lf,l,ca,pr]';
+x = [x vx]' ;
+p = [m,cm1,cm2,cr,cd]';
 %b = atan((l-lf)/l*tan(d));
 
  Fyr=pr*ca*atan((w*(l-lf)-vy)/vx);
@@ -12,11 +12,9 @@ p = [m,Iz,lf,l,ca,pr]';
 % Fxr=(cm1-cm2*VX)*p2*u2-cr-cd*VX^2;
 
 %%
-f=[vx*cos(psi)-vy*sin(psi);
-    vx*sin(psi)+vy*cos(psi);...
-    w;...
-    (1/m)*(Fyr+Fyf*cos(d));...
-    (1/Iz)*(Fyf*lf*cos(d)-Fyr*(l-lf))];
+f=[vx;...
+    1/m*(cm1-cm2*vx)*d-cr-cd*vx^2];
+
 % 
 
 %%
