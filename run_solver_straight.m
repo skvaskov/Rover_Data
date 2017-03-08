@@ -9,12 +9,12 @@ disp(['Hess norm: ', num2str(norm(sol.hessian))])
 
 %%
 load('smoothdata100imutime.mat')
-trialplot=processeddata9;
-start=1;
-done=200;
+trialplot=processeddata8;
+start=100;
+done=150;
 tvec=trialplot(1,start:done)-trialplot(1,start);
 uvec=trialplot(30,start:done);
-x0=trialplot([4,6],start);
+x0=[trialplot([4,6],start);sol.p(6)*uvec(1)-trialplot(6,start)];
 p=sol.p;
 [simx, simdxdt, simdfdx, simdfdp]=simulateDynamicsWithInput(fdyn,tvec,uvec,x0,p);
 

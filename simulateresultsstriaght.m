@@ -1,21 +1,19 @@
 %simulate results for random inputs
+
 load('smoothdata100imutime.mat')
 
-trial=processeddata2;
+trial=processeddata8;
 start=1;
-fin=250;
+fin=200;
 tvec=trial(1,start:fin)-trial(1,start);
 
-uvec=voltageModel(trial(30,start:fin));
+uvec=trial(30,start:fin);
 
-tau=.5;
-k=.5;
-p=[tau;k];
+p=[0.05;0;0;1.05970283987747;2.31687606793406;0.00448242517080985];
 
+fdyn=@picruise;
 
-fdyn=@gain;
-
-x0=[trial([4,6],start)];
+x0=[trial([4,6],start);0];
 
 [simx, simdxdt, simdfdx, simdfdp]=simulateDynamicsWithInput(fdyn,tvec,uvec,x0,p);
 
