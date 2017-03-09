@@ -4,13 +4,13 @@ clc
 syms x y psi B Bf Cf Df prB prC prD vy vx r d m cm1 cm2 cd cr Iz lf l car caf ca pr p2 u1 u2 v w real
 syms x_0 v_0 real
 x = [x y psi vy w]' ;
-p = [m,Iz,lf,l,Bf,Cf,Df,prB,prC,prD]';
+p = [m,Iz,lf,l,ca,pr]';
 %b = atan((l-lf)/l*tan(d));
 
 slipf=d-atan((w*lf+vy)/vx);
 slipr=atan((w*(l-lf)-vy)/vx);
-Fyr=prD*Df*sin(prC*Cf*atan(prB*Bf*slipr));
-Fyf=Df*sin(Cf*atan(Bf*slipf));
+Fyr=pr*ca*slipr;
+Fyf=ca*slipf;
 % Fxr=(cm1-cm2*VX)*p2*u2-cr-cd*VX^2;
 
 %%
