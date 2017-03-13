@@ -1,20 +1,22 @@
-clear
+clear all
 clc
 
-datastruct = load('smoothdata100imutime.mat') ;
-tarray=[22,17,10];
+datastruct = load('t17.mat') ;
+tarray=[17];
 data = {} ;
 input = {} ;
 t = {} ;
 start=25;
-done=75;
+done=150;
 
+%time delay (number of steps)
 
-
+tdelay=0;
 for idx = 1:length(tarray)
-    trial = datastruct.(['processeddata' num2str(tarray(idx))]) ;
+    %trial = datastruct.(['processeddata' num2str(tarray(idx))]) ;
+    trial=datastruct.('lineduptimepsi23');
     data{idx} = trial([2,3,20,10,26],start:done);
-    input{idx} = [steeringmodel(trial(32,start:done));trial(8,start:done)];
+    input{idx} = [steeringmodel(trial(32,start-tdelay:done-tdelay));trial(8,start:done)];
     t{idx} = trial(1,start:done); 
 end
 
@@ -22,22 +24,11 @@ end
 %battery 0.257 kg, traxx battery 0.260 kg
 %esitmate for the lower bound of lf: .1585
 
-fdyn = @lygerostan;
+fdyn = @lygerosMagic;
+p0=[2.759,.5,2,2.9,1,1,1,1,1,1,1,0]';
 
-l=.29;
-lf=.18;
-m=2.759;
-w=.3;
-Izub=2.759/12*(l^2+w^2);
-Izg=2.759/12*l^2;
-lflb=.1585;
+  pub=[2.762,50,3.4,3,10000*ones(1,6),1.2,.1]';
+    plb=[2.755,0,1.585,2.8,-10000*ones(1,6),.8,-.1]';
 
-%p0=[m,1.5,1.9,2.9,1.5,1]';
-p0=[2.75910149211392;1.70118417936534;1.58507316334463;2.99992456715352;1.4076866985652;1.19863040386614];
-pub=[2.762,10,2.8,3.1,10,2]';
-plb=[2.756,0,1.585,2.8,0,0]';
-scale=[1/10;1/10;1/10;1;1];
-
-
-user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub) ;
+user = nonlinearModelFit(fdyn,t,data,input,p0,'pu',pub,'pl',plb) ;
 
