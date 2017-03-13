@@ -29,13 +29,41 @@ endchop=length(x1);
 %this version will calculate heading, etc. from smoothed position data.
 %0 Heading will be defined just going in x based on the mocap frame
 
-%this version lines mocap time up with the time from the imu not the input
+%this version lines mocap time up with the time from the imu, it does not
+%do anything to the input time
+%%
+%calculations for heading and finding center of rover (these are based off of physical measurements of rover)
+%cluster 1
+b11=[.47/2-.01376;-.345/2+.01349];
+b12=[.47/2-.01503;-.345/2+.06885];
+b13=[.47/2-.06462;-.345/2+.01430];
+c1=(b11+b12+b13)/3;
+rc1=-c1;
+%cluster 2
+b21=[.47/2-.01676;.345/2-.01427];
+b22=[.47/2-.01693;.345/2-.06885];
+b23=[.47/2-.07824;.345/2-.01210];
+c2=(b21+b22+b23)/3;
+rc2=-c2;
+
+%cluster 3
+b31=[-.47/2+.01624;.345/2-.01554];
+b32=[-.47/2+.06983;.345/2-.01669];
+b33=[-.47/2+.01774;.345/2-.06509];
+c3=(b31+b32+b33)/3;
+rc3=-c3;
+%vector from 3 to 2 ,3 to 1
+r23=c2-c3;
+r13=c1-c3;
+%angle between vector connecting c2 and c3 (i.e. if the rover is at zero
+%heading this vector has angle gamma wrt to x axis). Same for c1 and c3
+gamma=atan2(r23(2),r23(1));
+chi=atan2(r13(2),r13(1));
+
 %% 
 
 %specify the angle between the line connecting sensors 2 and 3 and the
 %"striaght line" this will be used to calculate heading from mocap data and
-%rotate x/y coordinate frame so the rover driving "straight" is along X axis 
-gamma=0.0132;
 
 %define rotation matrices and scaling
 %to calibrate Accelerometer data
@@ -136,33 +164,32 @@ hold off
 
 
 %%
-ns1=[x1S(mocapstart);y1S(mocapstart)];
-ns2=[x2S(mocapstart);y2S(mocapstart)];
-ns3=[x3S(mocapstart);y3S(mocapstart)];
-n23=ns2-ns3;
-nPos=(ns1+ns3)/2;
-CPos=zeros(2,mocapsize);
+
+rc_all=zeros(2,mocapsize,3);
+hm=zeros(2,mocapsize);
 headingmocap=zeros(1,mocapsize);
-
 for i=1:mocapsize
-    s1=[x1S(i);y1S(i)];
-    s2=[x2S(i);y2S(i)];
-    s3=[x3S(i);y3S(i)];
-    CPos(:,i)=((s1+s3)/2-nPos);
-    s23=s2-s3;
-    headingmocap(i)=atan2(s23(2),s23(1))+gamma;
+    s13=[x1S(i)-x3S(i);y1S(i)-y3S(i)];
+    s23=[x2S(i)-x3S(i);y2S(i)-y3S(i)];
+    
+    hm(1,i)=atan2(s23(2),s23(1))-gamma;
+    hm(2,i)=atan2(s13(2),s13(1))-chi;
+    %headingmocap(i)=mean(hm(:,i));
+    headingmocap(i)=hm(1,i);
+    OBA=[cos(headingmocap(i)),sin(headingmocap(i));...
+        -sin(headingmocap(i)),cos(headingmocap(i))];
+    rc_all(:,i,3)=[x3S(i);y3S(i)]+OBA'*rc3;
+    rc_all(:,i,2)=[x2S(i);y2S(i)]+OBA'*rc2;
+    rc_all(:,i,1)=[x1S(i);y1S(i)]+OBA'*rc1;
 end
+CPos=mean(rc_all,3);
+CPos=CPos-CPos(:,1);
 
-% headingshift=atan2(n23(2),n23(1));
-% phi=headingshift-gamma;
-% 
-% ROT=[cos(phi) sin(phi);-sin(phi) cos(phi)];
-% CPos=ROT*CPos;
 %%
 %smooth position  and heading data
 CYS=smooth(mocaptime,CPos(2,:),30,'sgolay',2);
 CXS=smooth(mocaptime,CPos(1,:),50,'sgolay',2);
-CPosS=[CPos(1,:);CYS'];
+CPosS=[CXS';CYS'];
 headingmocapS=smooth(mocaptime,headingmocap,30,'sgolay',2);
 figure
 subplot(2,1,1)
@@ -203,7 +230,7 @@ steeringrcS=smooth(steeringrc)';
 timedelay=imutimeraw(imustart)-rctimeraw(rcstart);
 shiftedimutime=imutimeraw-rctimeraw(rcstart);
 shiftedmocaptime=(mocaptime-mocaptime(mocapstart))+timedelay;
-
+%%
 %get interpolated position, and acceleration data
 accellongimuCI=zeros(1,datasize);
 accellatimuCI=zeros(1,datasize);
@@ -211,7 +238,7 @@ posmocapI=zeros(datasize,2);
 headingmocapI=zeros(1,datasize);
 headingmocapSI=zeros(1,datasize);
 yawrateimuI=zeros(1,datasize);
-%%
+
 for i=1:datasize
     accellongimuCI(i)=interp1(shiftedimutime,accellongimuC',time(i));
     accellatimuCI(i)=interp1(shiftedimutime,accellatimuC',time(i));
@@ -257,8 +284,8 @@ for i=1:datasize-1
     dS=(posmocapI(:,i+1)-posmocapI(:,i));
     dt=time(i+1)-time(i);
     distancemocapI(i+1)=distancemocapI(i)+norm(dS);
-    O3=[cos(headingmocapSI(i)) sin(headingmocapSI(i));-sin(headingmocapSI(i)) cos(headingmocapSI(i))];
-    v(:,i)=O3*dS/dt;
+    OBA=[cos(headingmocapSI(i)) sin(headingmocapSI(i));-sin(headingmocapSI(i)) cos(headingmocapSI(i))];
+    v(:,i)=OBA*dS/dt;
     longvelocitymocapI(i)=v(1,i);
     latvelocitymocapI(i)=v(2,i);
     speedmocapI(i)=sign(v(1,i))*norm(v(:,i));
@@ -395,6 +422,6 @@ processeddata25=[time';posmocapI(1,:);posmocapI(2,:);distancemocapI;...
     throttlerc;throttlercS;steeringrc;steeringrcS];
 
 clearvars -except processeddata*
-save('smoothdata100imutime.mat','processeddata*','-append')
+save('reprocessedmarchimu.mat','processeddata*','-append')
 %% 
 

@@ -3,7 +3,7 @@
 %load workspace for trial with the following contents/format:
 clear all
 
-load(['trial24_4-jan-2017.mat'])
+load(['trial25_4-jan-2017.mat'])
 
 %all imported data will be in columns
 
@@ -25,6 +25,7 @@ load(['trial24_4-jan-2017.mat'])
 check=abs(x1)>.0000001;
 chop=find(check,1);
 endchop=length(x1);
+
 %this version will calculate heading, etc. from smoothed position data
 %% 
 
@@ -65,7 +66,7 @@ mocapsize=length(mocaptime);
 
 %normalize input channels to 0, and find index of first nonzero term
 %for the input channels (rcstart+1)
-Input1=-(Input1-1500)';
+Input1=(Input1-1500)';
 Input2=(Input2-1500)';
 k1=find(Input1,1,'first');
 k2=find(Input2,1,'first');
@@ -384,7 +385,7 @@ hold off
 %% 
 %Define variable containing data you want to use for sysID and clear other
 %variables see text file for order
-processeddata24=[time';posmocapI(1,:);posmocapI(2,:);distancemocapI;...
+processeddata25=[time';posmocapI(1,:);posmocapI(2,:);distancemocapI;...
     speedmocapI;speedmocapIS;longvelocitymocapI;longvelocitymocapIS;latvelocitymocapI;latvelocitymocapIS;...
     accellongimuCI;accellongimuCIS;accellatimuCI;accellatimuCIS;...
     accellongmocapI;accellongmocapIS;accellatmocapI;accellatmocapIS;...

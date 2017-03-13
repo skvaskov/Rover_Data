@@ -1,35 +1,22 @@
 %simulate results for random inputs
-datastruct = load('smoothdata100imutime.mat') ;
-tarray=[22,17,10];
-carray=['r','b','g','c','m'];
+datastruct = load('t17.mat') ;
+tarray=[17];
+carray=['r','b','k','c','m'];
 
-Izg=.5;
-cag=.5;
+p=[2.759,.5,2,2.9,1,1,1,1,1,1,1,0]';
 
-l=.29;
-lf=.18;
-m=2.759;
-w=.3;
-Izub=2.759/12*(l^2+w^2);
-%Izg=2.759/12*l^2;
-lflb=.1585;
-%p=[m,Izg,1.8,2.9,cag,1]';
-%p= [3.132187972709897; 0.997594187931241; 0.686470999900527; 2.562831941269615; 1.411292653719778;  0.802005305120440];
-%p= [2.759; 0.997594187931241; 0.686470999900527; 2.562831941269615;  1.243142641992868;  0.802005305120440];
-p=[2.75910149211392;1.70118417936534;1.58507316334463;2.99992456715352;1.4076866985652;1.19863040386614];
-%p=[2.75910149211392;1.70118417936534;2.5;2.99992456715352;1;1;1;1;1;1] ;
 start=1;
 fin=150;
-
+delay=0;
 figure
 for i=1:length(tarray)
-trial= datastruct.(['processeddata' num2str(tarray(i))]) ;
+trial= datastruct.(['imutimepsi23']) ;
 
 tvec=trial(1,start:fin)-trial(1,start);
 
-uvec=[steeringmodel(trial(32,start:fin));trial(8,start:fin)];
+uvec=[steeringmodel(trial(32,start-delay:fin-delay));trial(8,start:fin)];
 
-fdyn=@lygerostan;
+fdyn=@lygerosMagic;
 
 x0=trial([2 3 20 10 26],start);
 
