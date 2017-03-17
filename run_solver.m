@@ -9,7 +9,7 @@ disp(['Hess norm: ', num2str(norm(sol.hessian))])
 
 %%
 load('reprocessedmarchlinedup')
-trialplot=processeddata15;
+trialplot=processeddata17;
 start=25;
 done=75;
 tdelay=0;
