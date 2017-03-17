@@ -415,6 +415,13 @@ plot(time,steeringrcSI,'m')
 xlabel('Inputs')
 hold off
 
+figure
+hold on
+plot(time,yawratemocapI,'b')
+plot(time,yawratemocapIS,'r')
+plot(time,yawrateimuI,'g')
+xlabel('Yaw Rate/SideSlip (imu is g)')
+ylim([-1.5 1.5])
 %% 
 %Define variable containing data you want to use for sysID and clear other
 %variables see text file for order
@@ -427,6 +434,6 @@ processeddata17=[time';posmocapI(1,:);posmocapI(2,:);distancemocapI;...
     throttlercI;throttlercSI;steeringrcI;steeringrcSI];
 
 clearvars -except processeddata*
-save('t17.mat','processeddata*','-append')
+save('reprocessedmarchlinedup.mat','processeddata*','-append')
 %% 
 

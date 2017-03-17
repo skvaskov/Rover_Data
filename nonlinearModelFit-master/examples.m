@@ -58,10 +58,10 @@ ex.x0 = x0 ;
 ex.p0 = p0 ;
 ex.T = T ;
 ex.Nt = Nt ;
-ex.test_gradient = 0 ;
+ex.test_gradient = 1 ;
 ex.run_solver = 1 ;
 ex.plot_results = 0 ;
-ex.pl = [1 1];
-ex.pu = [1 2.5];
+% ex.pl = [1 1];
+% ex.pu = [1 2.5];
 
 [sol,user] = test_example(ex) ;

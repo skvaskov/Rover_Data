@@ -249,7 +249,7 @@ classdef nonlinearModelFit
             Ns = user.Nstates ;
             Np = user.Nparams ;
             Nd = user.Ndata ;
-           
+          
             N = sum(Nd) ;
             [x,p] = user.statedecode(z) ;
             
@@ -261,20 +261,20 @@ classdef nonlinearModelFit
             eq = x(:,2:N) - x(:,1:N-1) - repmat(user.dt(1:N-1),Ns,1).*dxdt(:,1:N-1) ;
             
             
-            % Zero out the end of each trial
+            % Zero out the beginning of each trial?
             Ncum = cumsum(user.Ndata) ;
-            eq(:,Ncum(1:end-1)) = 0;
+            eq(:,Ncum(1:end-1)) = 0 ;
             
             % add zero padding at the beginning for the first trial's initial
             % condition
             eq = [zeros(Ns,1), eq] ;
             
-            %add equality constraints for initial conditions of each trial
-            Ndt=cumsum(Nd);
-            init=[1,Ndt(1:end-1)+1];
-            eqinit=(x(:,init)-user.data(:,init));
-            eq=[eqinit,eq];
-            
+%              %add equality constraints for initial conditions of each trial
+              Ndt=cumsum(Nd);
+              init=[1,Ndt(1:end-1)+1];
+              eqinit=x(:,init)-user.data(:,init);
+              eq=[eqinit,eq];
+              
             %transform eq into row vector
             eq=eq(:);
             
@@ -293,7 +293,7 @@ classdef nonlinearModelFit
             dfdpgeq = reshape(permute(dtdfdp,[1 3 2]),[],Np) ;
             
             % Determine size needed for gradient matrix (Neq x (Ns*N + Np))
-            Neq = length(eq)-Ns*length(init); %leave equality constaints for initial conditions out for now
+            Neq = length(eq)-length(init)*Ns; %leave equality constaints for initial conditions out for now
             
             % Generate equality constraint gradient
             geq = [eye(Neq), [zeros(Ns,Np); dfdpgeq(1:Neq-Ns,:)]]' + ...
@@ -306,17 +306,14 @@ classdef nonlinearModelFit
             geq(:,col2zero(:)) = 0 ;
             
             %add initial condition constraint to equality gradient matrix
-            geqt=geq';
-            initgeq=zeros(length(init)*Ns,Ns*N+Np);
-            
-            initgeq(1:Ns,1:Ns)=eye(Ns);
-            if length(init)>1
-                for i=2:length(init)
-                initgeq((i-1)*Ns+1:i*Ns,Ns*init(i)+1:Ns*(init(i)+1))=eye(Ns);
-                end
+             temp=[];
+             initgeq=[eye(Ns);zeros(Ns*(N-1)+Np,Ns)];
+             
+            for i=2:length(init)
+                temp=[zeros((init(i)-1)*Ns,Ns);eye(Ns);zeros(Ns*(N-init(i))+Np,Ns)];
+                initgeq=[initgeq,temp];
             end
-            geqt=[initgeq;geqt];
-            geq=geqt';
+            geq=[initgeq,geq];
             
         end
 
