@@ -2,7 +2,7 @@ clear all
 clc
 
 datastruct = load('reprocessedmarchlinedup.mat') ;
-tarray=[11,10,13,17,24];
+tarray=[11,13,17,24];
 data = {} ;
 input = {} ;
 t = {} ;
