@@ -2,7 +2,7 @@ clear all
 clc
 
 datastruct = load('reprocessedmarchlinedup.mat') ;
-tarray=[11,13,17,24];
+tarray=[17];
 data = {} ;
 input = {} ;
 t = {} ;
@@ -24,10 +24,10 @@ end
 %esitmate for the lower bound of lf: .1585
 
 fdyn = @lygerosMagic;
-p0=[2.759,.75,2,2.9,1.842,1.93,2.8,-1.15,0.6]';
+p0=[2.759,.973,2,2.9,1842,4.6415,10,-1.15,0.6]';
 
 pub=[2.76,5,2.8,3,50,10,10,-1,1]';
 plb=[2.758,.5,1.585,2.8,0,0,0,-1.3,0]';
 
-user = nonlinearModelFit(fdyn,t,data,input,p0,'pu',pub,'pl',plb) ;
+user = nonlinearModelFit(fdyn,t,data,input,p0,'pu',pub,'pl',plb,'x2track',[4 5]) ;
 

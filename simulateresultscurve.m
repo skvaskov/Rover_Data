@@ -1,10 +1,10 @@
 clear
 %simulate results for random inputs
 datastruct = load('reprocessedmarchlinedup.mat') ;
-tarray=[17];
+tarray=[17,10];
 carray=['r','b','k','c','m'];
 %scaling for p1 and p2 is .001 and .1
-p=[2.759,.75,2,2.9,1.842,1.93,2.8,-1.15,0.6]';
+p=[2.759,1.18,2,2.9,22.23,8.89,3.34,-1.15,0.6]';
 
 start=25;
 fin=100;
