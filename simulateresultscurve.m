@@ -15,7 +15,7 @@ trial= datastruct.(['processeddata',num2str(tarray(i))]) ;
 
 tvec=trial(1,start:fin)-trial(1,start);
 
-uvec=[trial(31,start:fin);trial(8,start:fin)];
+uvec=[trial(32,start:fin);trial(8,start:fin)];
 
 fdyn=@lygerosMagic;
 
