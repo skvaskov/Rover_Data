@@ -13,7 +13,7 @@ vx=u(2);
 
 %parameters
 %p = [m,Iz,lf,l,Bf,Cf,Df,p1,p2]';
-scale=[1,.1,.1,.1,1,1,1,.001,.001];
+scale=[1,.1,.1,.1,1000,100,1,.001,.1];
 m=p(1)*scale(1); %mass
 Iz=p(2)*scale(2); %moment of inertia
 lf=p(3)*scale(3); %length of center of mass from front
