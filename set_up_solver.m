@@ -1,22 +1,21 @@
 clear all
 clc
 
-datastruct = load('t17.mat') ;
-tarray=[17];
+datastruct = load('reprocessedmarchlinedup.mat') ;
+tarray=[11,10,13,17,24];
 data = {} ;
 input = {} ;
 t = {} ;
 start=25;
-done=150;
+done=75;
 
 %time delay (number of steps)
 
-tdelay=0;
 for idx = 1:length(tarray)
-    %trial = datastruct.(['processeddata' num2str(tarray(idx))]) ;
-    trial=datastruct.('lineduptimepsi23');
-    data{idx} = trial([2,3,20,10,26],start:done);
-    input{idx} = [steeringmodel(trial(32,start-tdelay:done-tdelay));trial(8,start:done)];
+    trial = datastruct.(['processeddata' num2str(tarray(idx))]) ;
+   
+    data{idx} = trial([2,3,20],start:done);
+    input{idx} = [trial(31,start:done);trial(8,start:done)];
     t{idx} = trial(1,start:done); 
 end
 
@@ -24,11 +23,11 @@ end
 %battery 0.257 kg, traxx battery 0.260 kg
 %esitmate for the lower bound of lf: .1585
 
-fdyn = @lygerosMagic;
-p0=[2.759,.5,2,2.9,1,1,1,1,1,1,1,0]';
+fdyn = @kinematicbike;
+p0=[2.9,-1.15,0.08]';
 
-  pub=[2.762,50,3.4,3,10000*ones(1,6),1.2,.1]';
-    plb=[2.755,0,1.585,2.8,-10000*ones(1,6),.8,-.1]';
+  pub=[3,-.75,1]';
+   plb=[2.8,-1.75,]';
 
 user = nonlinearModelFit(fdyn,t,data,input,p0,'pu',pub,'pl',plb) ;
 
