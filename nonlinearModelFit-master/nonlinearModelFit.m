@@ -223,6 +223,7 @@ classdef nonlinearModelFit
             % Zero out the states that don't need to be tracked
             x(user.x2omit,:) = 0 ;
             d=user.data;
+            d(user.x2omit,:)=0;
             sx=s.*x;
             sd=s.*d;
             c = sum((sx(:)-sd(:)).^2) ;

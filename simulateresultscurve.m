@@ -3,8 +3,8 @@ clear
 datastruct = load('reprocessedmarchlinedup.mat') ;
 tarray=[17,10];
 carray=['r','b','k','c','m'];
-%scaling for p1 and p2 is .001 and .1
-p=[2.759,1.18,2,2.9,22.23,8.89,3.34,-1.15,0.6]';
+
+p=[2.759,2.6,2,2.9,1,3.5,1]';
 
 start=25;
 fin=100;
@@ -15,7 +15,7 @@ trial= datastruct.(['processeddata',num2str(tarray(i))]) ;
 
 tvec=trial(1,start:fin)-trial(1,start);
 
-uvec=[trial(32,start:fin);trial(8,start:fin)];
+uvec=[steeringmodel(trial(32,start:fin));trial(8,start:fin)];
 
 fdyn=@lygerosMagic;
 

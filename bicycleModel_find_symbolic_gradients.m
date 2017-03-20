@@ -1,30 +1,33 @@
 clear
 clc
 %%
-syms x y psi Bf Cf Df prB prC prD vy vx  d Iz lf l lr u1 u2 v w p1 p2 s1 s2 s3 s4 s5 s6 s7 s8 s9 m real
+syms x y psi Bf Cf Df Ef Sh Sv prB prC prD vy vx  d Iz lf l lr u1 u2 v w p1 p2 s1 s2 s3 s4 s5 s6 s7 s8 s9 m real
 syms x_0 v_0 real
-x = [x y psi]' ;
-p = [l,p1,p2]';
+x = [x y psi vy w]' ;
+p = [m,Iz,lf,l,Bf,Cf,Df]';
 %b = atan((l-lf)/l*tan(d));
 
- slipf=(p1*d+p2)-atan((vy+w*l/2)/vx);
+ slipf=d-atan((vy+w*l/2)/vx);
+ xf=slipf-Sh;
  slipr=atan((-vy+w*(l/2))/vx);
- Fyr=Df*sin(Cf*atan(Bf*slipr));
+ xr=slipr-Sh;
+ 
+Fyr=Df*sin(Cf*atan(Bf*slipr));
 Fyf=Df*sin(Cf*atan(Bf*slipf));
-psidot=1/l*tan(p1*d+p2)*vx;
+%psidot=1/l*tan(p1*d+p2)*vx;
 % Fxr=(cm1-cm2*VX)*p2*u2-cr-cd*VX^2;
 
  %%
-%  f=[vx*cos(psi)-vy*sin(psi);...
-%      vx*sin(psi)+vy*cos(psi);...
-%      w;...
-%      (1/(m)-(l/2-lf)*(l-lf)/(Iz))*Fyr+(1/(m)+(l/2-lf)*lf/(Iz))*cos(p1*d+p2)*Fyf-vx*w;...
-%      1/(Iz)*(Fyf*lf*cos(p1*d+p2)-Fyr*(l-lf))];
+ f=[vx*cos(psi)-vy*sin(psi);...
+     vx*sin(psi)+vy*cos(psi);...
+     w;...
+     (1/(m)+(l/2-lf)*(l-lf)/(Iz))*Fyr+(1/(m)-(l/2-lf)*lf/(Iz))*cos(d)*Fyf-vx*w;...
+     1/(Iz)*(Fyf*lf*cos(d)-Fyr*(l-lf))];
 %     
 % % % 
-f=[(cos(psi)-1/2*sin(psi)*tan(p1*d+p2))*vx;...
-     (sin(psi)+1/2*cos(psi)*tan(p1*d+p2))*vx;...
-     psidot];
+% f=[(cos(psi)-1/2*sin(psi)*tan(p1*d+p2))*vx;...
+%      (sin(psi)+1/2*cos(psi)*tan(p1*d+p2))*vx;...
+%      psidot];
 
 
 
