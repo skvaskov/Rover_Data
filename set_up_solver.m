@@ -2,12 +2,12 @@ clear all
 clc
 
 datastruct = load('reprocessedmarchlinedup.mat') ;
-tarray=[17,10,14];
+tarray=[17,10,14,20,22,25];
 data = {} ;
 input = {} ;
 t = {} ;
-start=25;
-done=75;
+start=50;
+done=100;
 
 %time delay (number of steps)
 
