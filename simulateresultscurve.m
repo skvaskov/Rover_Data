@@ -1,13 +1,22 @@
 clear
 %simulate results for random inputs
 datastruct = load('reprocessedmarchlinedup.mat') ;
-tarray=[17,10];
+tarray=[17,25];
 carray=['r','b','k','c','m'];
 
-p=[2.759,2.6,2,2.9,1,3.5,1]';
+%initial guess 2.759,1.22,1.586,2.9,.0236,7.4436,10.9012
+%solved for on trials 17,10,14 steps 25-50 (first order opt e-6)
+%p=[2.759,1.22,1.585,3,.0236,7.4436,10.9012]';
+
+%solved for on trials 17,10,14,15,20,22 (first order opt e-6)
+%p=[2.759,1.1098,1.585,3.000,.0093,12.1213,15.1396];
+
+%solved for on trials 17,10,14,15,20,22 only caring about states 4,5 in cost(first order opt e-7)
+p=[2.756,.5,2,2.9,1.32e-5,50,780];
+
 
 start=25;
-fin=100;
+fin=50;
 
 figure
 for i=1:length(tarray)
