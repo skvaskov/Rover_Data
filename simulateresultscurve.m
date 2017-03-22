@@ -2,7 +2,9 @@ clear
 %simulate results for random inputs
 datastruct = load('reprocessedmarchlinedup.mat') ;
 load('results_3_21_17.mat')
-tarray=[17,25];
+
+tarray=[11,25];
+
 carray=['r','b','k','c','m'];
 
 %initial guess 2.759,1.22,1.586,2.9,.0236,7.4436,10.9012
