@@ -23,11 +23,11 @@ end
 %battery 0.257 kg, traxx battery 0.260 kg
 %esitmate for the lower bound of lf: .1585
 
-fdyn = @lygerosMagic;
-p0=[2.759,2.6,2.5,2.9,1,3.5,1]';
+fdyn = @lygerosraj;
+p0=[2.759,2.6,2.5,2.9,1]';
 
-pub=[2.76,5,2.8,3,1000,100,100]';
-plb=[2.758,.5,1.585,2.8,0,0,0]';
+pub=[2.76,5,2.8,3,1000]';
+plb=[2.758,.5,1.585,2.8,0]';
 
 user = nonlinearModelFit(fdyn,t,data,input,p0,'pu',pub,'pl',plb) ;
 

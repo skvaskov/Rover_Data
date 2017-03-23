@@ -1,10 +1,10 @@
 clear
 clc
 %%
-syms x y psi Bf Cf Df Ef Sh Sv prB prC prD vy vx  d Iz lf l lr u1 u2 v w p1 p2 s1 s2 s3 s4 s5 s6 s7 s8 s9 m real
+syms x y psi Ca Bf Cf Df Ef Sh Sv prB prC prD vy vx  d Iz lf l lr u1 u2 v w p1 p2 s1 s2 s3 s4 s5 s6 s7 s8 s9 m real
 syms x_0 v_0 real
 x = [x y psi vy w]' ;
-p = [m,Iz,lf,l,Bf,Cf,Df]';
+p = [m,Iz,lf,l,Ca]';
 %b = atan((l-lf)/l*tan(d));
 
  slipf=d-atan((vy+w*l/2)/vx);
@@ -12,8 +12,8 @@ p = [m,Iz,lf,l,Bf,Cf,Df]';
  slipr=atan((-vy+w*(l/2))/vx);
  xr=slipr-Sh;
  
-Fyr=Df*sin(Cf*atan(Bf*slipr));
-Fyf=Df*sin(Cf*atan(Bf*slipf));
+Fyr=Ca*slipr;
+Fyf=Ca*slipf;
 %psidot=1/l*tan(p1*d+p2)*vx;
 % Fxr=(cm1-cm2*VX)*p2*u2-cr-cd*VX^2;
 

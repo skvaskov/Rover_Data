@@ -2,7 +2,7 @@ clear
 %simulate results for random inputs
 datastruct = load('reprocessedmarchlinedup.mat') ;
 load('results_3_21_17.mat')
-tarray=[11,25];
+tarray=[11,23,17,25];
 carray=['r','b','k','c','m'];
 
 %initial guess 2.759,1.22,1.586,2.9,.0236,7.4436,10.9012
@@ -14,11 +14,11 @@ carray=['r','b','k','c','m'];
 
 %solved for on trials 17,10,14,15,20,22 only caring about states 4,5 in cost(first order opt e-7)
 %p=[2.756,.5,2,2.9,1.32e-5,50,780];
-p=results(4,1:7);
+p=[2.759,1,2,2.9,.5];
 
 
-start=25;
-fin=50;
+start=75;
+fin=125;
 
 figure
 for i=1:length(tarray)
@@ -28,7 +28,7 @@ tvec=trial(1,start:fin)-trial(1,start);
 
 uvec=[steeringmodel(trial(32,start:fin));trial(8,start:fin)];
 
-fdyn=@lygerosMagic;
+fdyn=@lygerosraj;
 
 x0=trial([2, 3, 20,10,26],start);
 
