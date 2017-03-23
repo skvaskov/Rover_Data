@@ -16,21 +16,30 @@ for idx = 1:length(tarray)
     t{idx} = trial(1,start:done);
 end
 
-fdyn = @lygerosMagic;
+fdyn = @lygerosraj;
 
 
     
-guess=results([2 4 5 6 7],1:7);
-pub=[2.76,9,2.8,3,1000,1000,1000]';
-plb=[2.758,.4,1.585,2.8,0,0,0]';
+guess=[.5,.5;
+        .5,1;...
+        1,.5;...
+        1,1;...
+        2.5,1;...
+        2.5,10;...
+        5,1;...
+        5,10];
+        
+    
+pub=[2.76,9,2.8,3,1000]';
+plb=[2.758,.4,1.585,2.8,0]';
 
 tic
 sz=size(guess);
-results=zeros(sz(1),9);
+results=zeros(sz(1),7);
 
 for i=1:sz(1)
     
-p0=[2.759,guess(i,1),2,2.9,guess(i,2),guess(i,3),guess(i,4)]';
+p0=[2.759,guess(i,1),2,2.9,guess(i,2)]';
 user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub) ;
 user.verbose=1;
 [sol,~] = user.modelFit() ;
