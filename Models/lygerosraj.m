@@ -41,6 +41,6 @@ dfdp= [                                                                         
                                                                                 0,                             -(Ca*atan((vy - (l*w)/2)/vx)*(l - lf) + Ca*lf*cos(d)*(d - atan((vy + (l*w)/2)/vx)))/Iz^2,                                     -(Ca*atan((vy - (l*w)/2)/vx) - Ca*cos(d)*(d - atan((vy + (l*w)/2)/vx)))/Iz,                                                                                                                                   -((Ca*w*(l - lf))/(2*vx*((vy - (l*w)/2)^2/vx^2 + 1)) - Ca*atan((vy - (l*w)/2)/vx) + (Ca*lf*w*cos(d))/(2*vx*((vy + (l*w)/2)^2/vx^2 + 1)))/Iz,                                            (atan((vy - (l*w)/2)/vx)*(l - lf) + lf*cos(d)*(d - atan((vy + (l*w)/2)/vx)))/Iz];
  %add scaling to jacobian for parameters 
 
-m=repmat(scale,5,1);
+scale=repmat(scale,5,1);
 dfdp=scale.*dfdp; 
 end
