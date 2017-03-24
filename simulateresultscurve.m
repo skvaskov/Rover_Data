@@ -1,15 +1,25 @@
 clear
 %simulate results for random inputs
 datastruct = load('reprocessedmarchlinedup.mat') ;
+
 load('results_3_23_17.mat')
+
+
+
+
+
+
 tarray=[11,23,17,25];
+
 carray=['r','b','k','c','m'];
 
 
 p=results(1,1:5);
 
+
 start=75;
 fin=125;
+
 
 figure
 for i=1:length(tarray)
