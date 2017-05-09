@@ -2,25 +2,25 @@ clear
 %simulate results for random inputs
 datastruct = load('reprocessedmarchlinedup.mat') ;
 
-load('results_3_23_17.mat')
+%load('results_3_23_17.mat')
 
 
 
 
 
 
-tarray=[11,23,17,25];
+tarray=[11];
 
 carray=['r','b','k','c','m'];
 
 
-p=results(1,1:5);
+p=[2.759,.1,.18,.29,.02,5e3,.5,.8]';
 
 
 start=75;
 fin=125;
 
-
+fdyn=@bikeparabolictire;
 figure
 for i=1:length(tarray)
 trial= datastruct.(['processeddata',num2str(tarray(i))]) ;
@@ -29,7 +29,7 @@ tvec=trial(1,start:fin)-trial(1,start);
 
 uvec=[steeringmodel(trial(32,start:fin));trial(8,start:fin)];
 
-fdyn=@lygerosraj;
+
 
 x0=trial([2, 3, 20,10,26],start);
 

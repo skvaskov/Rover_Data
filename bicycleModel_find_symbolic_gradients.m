@@ -1,26 +1,24 @@
 clear
 clc
 %%
-syms x y psi Ca Bf Cf Df Ef Sh Sv prB prC prD vy vx  d Iz lf l lr u1 u2 v w p1 p2 s1 s2 s3 s4 s5 s6 s7 s8 s9 m real
+syms x y psi ca Bf a b c kp ps Cf Df k Ef Sh mu muo Sv prB prC prD vy vx  d Iz lf l lr u1 u2 v w p1 p2 s1 s2 s3 s4 s5 s6 s7 s8 s9 m real
 syms x_0 v_0 real
-x = [x y psi vy w]' ;
-p = [m,Iz,lf,l,Ca]';
+x = [x y psi vx vy w]' ;
+p = [m,Iz,lf,l,ca,a,b,c,kp,ps]';
 %b = atan((l-lf)/l*tan(d));
 
  slipf=d-atan((vy+w*l/2)/vx);
  xf=slipf-Sh;
- slipr=atan((-vy+w*(l/2))/vx);
+ slipr=atan((vy-w*(l/2))/vx);
  xr=slipr-Sh;
  
-Fyr=Ca*slipr;
-Fyf=Ca*slipf;
-%psidot=1/l*tan(p1*d+p2)*vx;
-% Fxr=(cm1-cm2*VX)*p2*u2-cr-cd*VX^2;
-
+Fyf=ca*(d-(w*l/2+vy)/vx);
+Fyr=ca*(w*l/2-vy)/vx;
  %%
  f=[vx*cos(psi)-vy*sin(psi);...
      vx*sin(psi)+vy*cos(psi);...
      w;...
+     -a-b*vx-c*vx^2+kp*(ps*u2-vx)-1/m*Fyf*sin(d)+vy*w-(lf-l/2)*w^2;...
      (1/(m)+(l/2-lf)*(l-lf)/(Iz))*Fyr+(1/(m)-(l/2-lf)*lf/(Iz))*cos(d)*Fyf-vx*w;...
      1/(Iz)*(Fyf*lf*cos(d)-Fyr*(l-lf))];
 %     

@@ -3,7 +3,7 @@
 %load workspace for trial with the following contents/format:
 clear all
 
-load(['trial17_4-jan-2017.mat'])
+load(['trial1_4-jan-2017.mat'])
 
 %all imported data will be in columns
 
@@ -25,7 +25,7 @@ load(['trial17_4-jan-2017.mat'])
 check=abs(x1)>.0000001;
 chop=find(check,1);
 endchop=length(x1);
-
+chop=150;
 %this version will calculate heading, etc. from smoothed position data.
 %0 Heading will be defined just going in x based on the mocap frame
 
@@ -250,7 +250,7 @@ for i=1:datasize
     steeringrcI(i)=interp1(shiftedrctime,steeringrc',time(i));
     throttlercI(i)=interp1(shiftedrctime,throttlerc',time(i));
     steeringrcSI(i)=interp1(shiftedrctime,steeringrcS',time(i));
-    steeringrcSI(i)=interp1(shiftedrctime,steeringrcS',time(i));
+    throttlercSI(i)=interp1(shiftedrctime,throttlercS',time(i));
     if isnan(posmocapI(i,1)) || isnan(yawrateimuI(i))
         datasize=i-1;
         accellongimuCI=accellongimuCI(1:datasize);
@@ -425,7 +425,7 @@ ylim([-1.5 1.5])
 %% 
 %Define variable containing data you want to use for sysID and clear other
 %variables see text file for order
-processeddata17=[time';posmocapI(1,:);posmocapI(2,:);distancemocapI;...
+processeddata1=[time';posmocapI(1,:);posmocapI(2,:);distancemocapI;...
     speedmocapI;speedmocapIS;longvelocitymocapI;longvelocitymocapIS;latvelocitymocapI;latvelocitymocapIS;...
     accellongimuCI;accellongimuCIS;accellatimuCI;accellatimuCIS;...
     accellongmocapI;accellongmocapIS;accellatmocapI;accellatmocapIS;...
