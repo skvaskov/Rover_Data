@@ -11,8 +11,8 @@ w=z(6);
 d=u(1);
 u2=u(2);
 %parameters p = [m,Iz,lf,l,ca,a,b,c,kp,ps]';
-scale=[1,.1,.1,.1,10,...
-      1,.1,1e-4,.1,.01];
+scale=[1,1,1,1,1,...
+      1,1,1,1,1];
 m=p(1)*scale(1); %mass [kg]
 Iz=p(2)*scale(2); %moment of inertia yaw [kg m^2]
 lf=p(3)*scale(3); %length of center of mass from front [m]
