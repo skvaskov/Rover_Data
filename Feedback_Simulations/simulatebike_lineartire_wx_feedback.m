@@ -16,13 +16,15 @@ Re=sqrt(.116^2-.01^2);
 a=0;
 b=0;
 c=0;
-ky=1;
-kpsi=1;
-kx=1;
-kvx=1;
+ky=0;
+kpsi=0;
+kw=1;
+kvy=0;
+kx=0;
+kvx=10;
 kwx=.85;
 kgamma=10;
-P=[m,Jg,l,d,ca, Re, a, b,c,ky,kpsi,kx,kvx,kwx,kgamma];
+P=[m,Jg,l,d,ca, Re, a, b,c,ky,kpsi,kw,kvy,kx,kvx,kwx,kgamma];
 
 %enter desired steering and velocity inputs (for trajectory to follow)
 num=10;
@@ -74,8 +76,10 @@ ex=cos(psid)*(xd-x)+sin(psid)*(yd-y);
 ey=-sin(psid)*(xd-x)+cos(psid)*(yd-y);
 eh=psid-psi;
 evx=vx0(i)-vx;
+ew=vx0(i)/l*tan(gamma0(i))-w;
+evy=vx0(i)*d/l*tan(gamma0(i))-vy;
 %input
-gammades(i)=ky*ey+kpsi*eh+gamma0(i);
+gammades(i)=ky*ey+kpsi*eh+kw*ew+kvy*evy+gamma0(i);
 wxdes(i)=kx*ex+kvx*evx+vx0(i)/Re;
 %tire forces
 if vx==0 || wx==0

@@ -17,7 +17,7 @@ gamma0=steerfun(t);
 vx0=vxfun(t);
 
 %parameter vector
-%P=[m,Jg,l,d,ca, Re, a,b, c,ky,kpsi,kw,kx,kvx,kwx,kgamma]
+%P=[m,Jg,l,d,ca, Re, a,b, c,ky,kpsi,kw,kvy,kx,kvx,kwx,kgamma]
 m=P(1);
 Jg=P(2);
 l=P(3);
@@ -29,18 +29,22 @@ b=P(8);
 c=P(9);
 ky=P(10);
 kpsi=P(11);
-kx=P(12);
-kvx=P(13);
-kwx=P(14);
-kgamma=P(15);
+kw=P(12);
+kvy=P(13);
+kx=P(14);
+kvx=P(15);
+kwx=P(16);
+kgamma=P(17);
 
 %error
 ex=cos(psid)*(xd-x)+sin(psid)*(yd-y);
 ey=-sin(psid)*(xd-x)+cos(psid)*(yd-y);
 eh=psid-psi;
 evx=vx0-vx;
+ew=vx0/l*tan(gamma0)-w;
+evy=vx0*d/l*tan(gamma0)-vy;
 %input
-gammades=ky*ey+kpsi*eh+gamma0;
+gammades=ky*ey+kpsi*eh+kw*ew+kvy*evy+gamma0;
 wxdes=kx*ex+kvx*evx+vx0/Re;
 
 %tire forces

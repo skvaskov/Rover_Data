@@ -1,4 +1,4 @@
-function [dZdt] = bike_paratire_wx_feedback(t,Z,U,P)
+function [dZdt] = bike_paratire_wx_feedback(t,Z,steerfun,vxfun,P)
 %bicycle model with parabolic pressure distrubution tire forces. Combined tire model, Derive from Pacejka and Sharp,(Raj
 %book page 384)
 %states
@@ -9,17 +9,17 @@ vx=Z(4);
 wx=Z(5);
 vy=Z(6);
 w=Z(7);
-xd=Z(8);
-yd=Z(9);
-psid=Z(10);
+gamma=Z(8);
+xd=Z(9);
+yd=Z(10);
+psid=Z(11);
 
 %input vector
-gamma0=U(1);
-gamma0dot=U(2);
-vx0=U(3);
+gamma0=steerfun(t);
+vx0=vxfun(t);
 
 %parameter vector
-%P=[m,Jg,l,d,avx, bvx, cvx,Rw, a,b,k,mu,mu0,ky,kpsi,kx,kvx,kwx]
+%P=[m,Jg,l,d,avx, bvx, cvx,Rw, a,b,k,mu,mu0,ky,kpsi,kw,kvy,kx,kvx,kwx,kgamma]
 g=9.80655;
 m=P(1);
 Jg=P(2);
@@ -36,24 +36,24 @@ mu=P(12);
 mu0=P(13);
 ky=P(14);
 kpsi=P(15);
-kx=P(16);
-kvx=P(17);
-kwx=P(18);
+kw=P(16);
+kvy=P(17);
+kx=P(18);
+kvx=P(19);
+kwx=P(20);
+kgamma=P(21);
 
 %error
 ex=cos(psid)*(xd-x)+sin(psid)*(yd-y);
 ey=-sin(psid)*(xd-x)+cos(psid)*(yd-y);
-eydot=(d-cos(psid)*(xd-x)-sin(psid)*(yd-y))*vx0/l*tan(gamma0)+...
-    vx*sin(psid-psi)+vy*cos(psid-psi);
-
-
 eh=psid-psi;
-ehdot=vx0/l*tan(gamma0)-w;
 evx=vx0-vx;
+ew=vx0/l*tan(gamma0)-w;
+evy=vx0*d/l*tan(gamma0)-vy;
 
 %input
-gamma=ky*ey+kpsi*eh+gamma0;
-gammadot=ky*eydot+kpsi*ehdot+gamma0dot;
+gammades=ky*ey+kpsi*eh+kw*ew+kvy*evy+gamma0;
+gammadot=kgamma*(gammades-gamma);
 wxdes=kx*ex+kvx*evx+vx0/Re;
 
 %slip angles
@@ -120,6 +120,7 @@ dZdt=[vx*cos(psi)-vy*sin(psi);...
     kwx*(wxdes-wx);...
     1/m*(Fyr+Fyf*cos(gamma))-w*vx;...
     1/Jg*(-d*Fyr+(l-d)*Fyf*cos(gamma)+Mf+Mr);...
+    gammadot;...
     vx0/l*(l*cos(psid)-d*sin(psid)*tan(gamma0));...
     vx0/l*(l*sin(psid)+d*cos(psid)*tan(gamma0));...
     vx0/l*tan(gamma0)];
