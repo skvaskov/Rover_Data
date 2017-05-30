@@ -18,37 +18,48 @@ b=.07;
 k=8.57142e5;
 mu=0.6;
 mu0=0.9;
-ky=1;
-kpsi=1;
-kx=1;
-kvx=.5;
+ky=0;
+kpsi=0;
+kw=.5;
+kvy=0;
+kx=0;
+kvx=20;
 kwx=.85;
-P=[m,Jg,l,d, avx, bvx, cvx, Re, a,b,k,mu,mu0,ky,kpsi,kx,kvx,kwx];
+kgamma=10;
+P=[m,Jg,l,d,avx, bvx, cvx,Re, a,b,k,mu,mu0,ky,kpsi,kw,kvy,kx,kvx,kwx,kgamma];
 
-%center desired steering and velocity (trajectory paramters)
-gamma0=2*pi/180;
-gamma0dot=0;
-vx0=.5;
+%enter desired steering and velocity inputs (for trajectory to follow)
+num=10;
+gmax=5; %maximum steering angle (degrees)
+vmax=1;%maximum velocity (m/s)
+steps=5*ones(1,num);
+garray=rand(1,num)*gmax*2*pi/180-gmax*pi/180;
+vxarray=rand(1,num)*vmax;
+steerfun=@(t) step(t,garray,steps);
+vxfun=@(t) step(t,vxarray,steps);
 
-tspan=[0,10];
-Z0=[0;0;0;.1;.1/Re;0;0];
+tarray=cumsum(steps);
+tspan=[0,tarray(end)];
+Z0=[0;0;0;vxarray(1);vxarray(1)/Re;0;0;garray(1)];
 Z0=[Z0;Z0(1:3)];
-[tconst,zconst]=ode45(@(t,Z) bikeconstv(t,Z,[gamma0;vx0],[l;d]),tspan,Z0(1:3));
-[tfb,zfb]=ode45(@(t,Z) bike_paratire_wx_feedback(t,Z,[gamma0;gamma0dot;vx0],P),tspan,Z0);
+[tconst,zconst]=ode45(@(t,Z) bikeconstv(t,Z,steerfun,vxfun,[l;d]),tspan,Z0(1:3));
+[tfb,zfb]=ode45(@(t,Z) bike_paratire_wx_feedback(t,Z,steerfun,vxfun,P),tspan,Z0);
 
 %calculate commanded inputs, tire forces
-l=length(zfb(:,1));
-Fx=zeros(l,1);
-Fyr=zeros(l,1);
-Fyf=zeros(l,1);
-gamma=zeros(l,1);
-gammadot=zeros(l,1);
-wxdes=zeros(l,1);
-tar=zeros(l,1);
-taf=zeros(l,1);
-Mr=zeros(l,1);
-Mf=zeros(l,1);
-for i=1:l
+len=length(zfb(:,1));
+Fx=zeros(len,1);
+Fyr=zeros(len,1);
+Fyf=zeros(len,1);
+gammades=zeros(len,1);
+gamma0=zeros(len,1);
+vx0=zeros(len,1);
+wxdes=zeros(len,1);
+tar=zeros(len,1);
+taf=zeros(len,1);
+Mr=zeros(len,1);
+Mf=zeros(len,1);
+for i=1:len
+t=tfb(i);
 x=zfb(i,1);
 y=zfb(i,2);
 psi=zfb(i,3);
@@ -56,23 +67,24 @@ vx=zfb(i,4);
 wx=zfb(i,5);
 vy=zfb(i,6);
 w=zfb(i,7);
-xd=zfb(i,8);
-yd=zfb(i,9);
-psid=zfb(i,10);
+gamma=zfb(i,8);
+xd=zfb(i,9);
+yd=zfb(i,10);
+psid=zfb(i,11);
+%input vector
+gamma0(i)=steerfun(t);
+vx0(i)=vxfun(t);
 %error
 ex=cos(psid)*(xd-x)+sin(psid)*(yd-y);
 ey=-sin(psid)*(xd-x)+cos(psid)*(yd-y);
-eydot=(d-cos(psid)*(xd-x)-sin(psid)*(yd-y))*vx0/l*tan(gamma0)+...
-    vx*sin(psid-psi)+vy*cos(psid-psi);
-
-
 eh=psid-psi;
-ehdot=vx0/l*tan(gamma0)-w;
-evx=vx0-vx;
+evx=vx0(i)-vx;
+ew=vx0(i)/l*tan(gamma0(i))-w;
+evy=vx0(i)*d/l*tan(gamma0(i))-vy;
 %input
-gamma(i)=ky*ey+kpsi*eh+gamma0;
-gammadot(i)=ky*eydot+kpsi*ehdot+gamma0dot;
-wxdes(i)=kx*ex+kvx*evx+vx0/Re;
+gammades(i)=ky*ey+kpsi*eh+kw*ew+kvy*evy+gamma0(i);
+gammadot=kgamma*(gammades(i)-gamma);
+wxdes(i)=kx*ex+kvx*evx+vx0(i)/Re;
 
 %slip angles
 if vx==0
@@ -80,7 +92,7 @@ if vx==0
     taf(i)=0;
 else
 tar(i)=-(vy-(d-a)*w)/vx;
-taf(i)=-(-vx*sin(gamma(i))+(vy+(l-d)*w)*cos(gamma(i))+a*(w+gammadot(i)))/(vx*cos(gamma(i))+(vy+(l-d)*w)*sin(gamma(i)));
+taf(i)=-(-vx*sin(gamma)+(vy+(l-d)*w)*cos(gamma)+a*(w+gammadot))/(vx*cos(gamma)+(vy+(l-d)*w)*sin(gamma));
 end
 %slip ratios
 if wxdes(i)>=wx
@@ -132,29 +144,34 @@ end
 
 figure
 subplot(3,2,1)
-plot(zconst(:,1),zconst(:,2))
+plot(zfb(:,9),zfb(:,10))
 hold on
 plot(zfb(:,1),zfb(:,2))
 xlabel('X')
 ylabel('Y')
+legend('Plan (0)','Simulated')
 subplot(3,2,3)
-plot(tconst,zconst(:,3))
+plot(tfb,zfb(:,11))
 hold on
 plot(tfb,zfb(:,3))
 xlabel('Time (s)')
 ylabel('Heading (rad)')
+legend('Plan (0)','Simulated')
 subplot(3,2,5)
-plot(tspan,[vx0,vx0])
+plot(tfb,vx0)
 hold on
 plot(tfb,zfb(:,4))
 xlabel('Time (s)')
 ylabel('Longitudinal Velocity (m/s)')
+legend('Plan (0)','Simulated')
 subplot(3,2,2)
-plot(tspan,[gamma0 gamma0])
+plot(tfb,gamma0)
 hold on
-plot(tfb,gamma)
+plot(tfb,gammades)
+plot(tfb,zfb(:,8))
 xlabel('Time (s)')
 ylabel('Steering Angle')
+legend('Plan(0)','Command','Simulated')
 subplot(3,2,4)
 plot(tfb,wxdes)
 hold on

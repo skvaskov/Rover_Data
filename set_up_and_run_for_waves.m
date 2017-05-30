@@ -1,16 +1,16 @@
 clear all
 clc
-load('results_3_21_17.mat')
-datastruct = load('reprocessedmarchlinedup.mat') ;
-tarray=[17,10,14,20,22,25];
+datastruct = load('may25_tests.mat') ;
+tarray=["steer2","steer4"];
+testgradient=1;
 data = {} ;
 input = {} ;
 t = {} ;
-start=25;
-done=100;
+start=250;
+done=800;
 
 for idx = 1:length(tarray)
-    trial = datastruct.(['processeddata' num2str(tarray(idx))]) ;
+    trial = datastruct.(['processed_',char(tarray(idx))]) ;
     data{idx} = trial([2,3,20,10,26],start:done);
     input{idx} = [steeringmodel(trial(32,start:done));trial(8,start:done)];
     t{idx} = trial(1,start:done);
@@ -41,6 +41,17 @@ for i=1:sz(1)
     
 p0=[2.759,guess(i,1),2,2.9,guess(i,2)]';
 user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub) ;
+if testgradient && i==1
+disp('Testing numeric vs analytic gradient')
+v = rand(size(user.z0)) ;
+
+tic
+geqNum = numericJacobian(@user.equalityConstraints,1,v)' ;
+[~,geqAnl] = user.equalityConstraints(v) ;
+toc
+
+disp(['Numeric vs. Analytic Gradients: ', num2str(norm(geqAnl - geqNum))])
+end
 user.verbose=1;
 [sol,~] = user.modelFit() ;
 results(i,:)=[sol.p',sol.finalCost,sol.output.firstorderopt];
@@ -49,5 +60,5 @@ end
 
 toc
 disp('Done. Now check your results')
-
+disp(['Numeric vs. Analytic Gradients: ', num2str(norm(geqAnl - geqNum))])
 
