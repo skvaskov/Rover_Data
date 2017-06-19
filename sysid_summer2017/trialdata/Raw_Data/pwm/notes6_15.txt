@@ -1,0 +1,31 @@
+battery A
+pwm1A 1600 6s 1400 2s
+battery B
+pwm2B 1620 4s 1300 2s
+pwm3B 1640 3s 1400 2s
+pwm4B 1660 2s 1300 2s
+
+pwm5B 1660 1s 1640 2s 
+pwm6B 1660 1s 1620 2.5s
+pwm7B 1660 1s 1600 4s
+Battery A
+pwm8A 1660 1s 1580 5s
+pwm9A 1660 1s 1540 5s
+pwm10A 1660 1s 1500 5s
+pwm11A 1660 1s 1480 5s went backwards after a while?
+pwm12A 1660 1s 1440 5s didnt
+pwm13A 1660 1s 1420 6s didnt apply braking input at end
+pwm14A 1660 1s 1400 5s messed up and entered too high value 14200 seemed to cost
+pwm15A 1660 1s 1400 5s didnt apply braking input at end
+pwm16A 1660 1s 1380 5s 
+pwm17A 1660 1s 1360 5s
+pwm18A 1660 1s 1340 5s
+pwm19A 1660 1s 1320 5s
+pwm20A 1660 1s 1490 5s 1400 2s 
+pwm21A 1660 1s 1640 2s
+pwm22A 1660 1s 1620 2.5s
+pwm23A 1660 1s 1600 4s
+Not voltage might be low 
+pwm21A
+
+

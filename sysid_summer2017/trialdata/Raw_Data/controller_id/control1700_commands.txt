@@ -1,0 +1,11 @@
+control1700_1630: 1700 .5s 1630 1.5s (might not be sure of times at speed)
+control1700_1620: 1700 .4s 1620 2s (might not be sure of times at speed)
+battery swap
+control1700_1610: 1700 .3s 1610 3s (might not be sure of times at speed)
+control1700_1600: 1700 .17s 1600 4s (might not be sure of times at speed)
+battery swap
+control1700_1600_1620: 1700 .17s 1600 2s 1700 .23s 1620 1s 
+control1700_1600_1630: 1700 .16s 1600 2s 1700 .33s  1630 .75s
+battery swap
+control1700_1610_1620: 1700 .28s 1610 1.5s 1700 .11s 1620 1s
+control1700_1610_1630: 1700 .28s 1610 1.5s 1700 .21s 1630 .75s

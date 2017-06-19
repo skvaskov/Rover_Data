@@ -1,35 +1,44 @@
-clear
+clear all
 clc
 
-datastruct = load('smoothdata100imutime.mat') ;
-tarray=[9,2];
-data = {} ;
+load('motor_pwm.mat') ;
+
+statedata = {} ;
 input = {} ;
 t = {} ;
-start=25;
-done=100;
 
 
 
-for idx = 1:length(tarray)
-    trial = datastruct.(['processeddata' num2str(tarray(idx))]) ;
-    data{idx} = [trial([4,6],start:done);zeros(1,done-start+1)];
-    input{idx} = trial(30,start:done);
-    t{idx} = trial(1,start:done); 
+count=1;
+for idx = 1:1:24
+    [time,x,y,psi,vx,vy,w,throttle,steering] = mocap_data(data1700,idx,.2);
+    statedata{count} = vx';
+    input{count} = throttle';
+    t{count} = time'; 
+    count=count+1;
 end
-
+for idx = 1:1:12
+    [time,x,y,psi,vx,vy,w,throttle,steering] = mocap_data(dataslow,idx,.2);
+    statedata{count} = vx';
+    input{count} = throttle';
+    t{count} = time'; 
+    count=count+1;
+end
+% for idx = 2:13
+%     [time,x,y,psi,vx,vy,w,throttle,steering] = mocap_data(data,idx,.2);
+%     statedata{count} = vx';
+%     input{count} = throttle';
+%     t{count} = time'; 
+%     count=count+1;
+% end
 %masses of rover components: rover 2.470 kg, floureon battery 0.289 kg, lrp
 %battery 0.257 kg, traxx battery 0.260 kg
 %esitmate for the lower bound of lf: .1585
 
-fdyn = @picruise;
+fdyn = @pwmv2;
 
 
-p0=[.05;1e-6;1e-6;1.05970283987747;2.31687606793406;0.00448242517080985];
+p0=[178.354733764932;-0.245372336075531;-43.5176614759968;0.0559933438760013;-0.0292264794830306;8.38258858728173e-05;-1.82431217474240e-05];
 
-scale=[1/10;1/10;1/10;1;1];
-plb=[0,0,0,0,0,0]';
-pub=[10,1,1,10000,10000,1]';
-
-user = nonlinearModelFit(fdyn,t,data,input,p0,'pl',plb,'pu',pub,'x2track',[1,2]) ;
+user = nonlinearModelFit(fdyn,t,statedata,input,p0) ;
 

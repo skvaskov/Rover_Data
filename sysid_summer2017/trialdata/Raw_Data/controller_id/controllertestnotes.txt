@@ -1,0 +1,63 @@
+test1: 1740 1s maybe slip at launch???? accelerates from 0 to 2 in 0.3s
+test2: 1760 1s def saw some slip
+test3: 1700 1.5s 
+test4: 1675 1.5s
+
+control1: 1740 .3s 1650 .7s
+control2: 1740 .5s 1650 .5s notice a bit of slip/yaw off the line
+control3: 1730 .5s 1625 .5s notice some yaw off the line
+control4: 1720 .5s 1625 .5s notice some yaww off the line
+control5: 1700 0.5s 1625 .5s went straight, but yaw rate off the line
+control6: 1680 .5s 1625 .5s went straight, slight slight yaw upon accelerating
+control7: 1650 .5s 1625 .5s 
+
+control8: 1650 .25s 1740 .25s 1625 .5s 
+control9: 1625 .25s 1700 .25s 1625 .5s yaw upon acceleration
+control10: 1650 .5s 1615 1s pretty good ~1m/s in .5s
+control11: 1675 .5s 1615 1.5s slight slight yaw
+control12: 1660 .5s 1615 1.5s ok, overshot velocity
+control13: 1660 .4s 1615 1.6s .5s to reach 0.92 m/s :)
+control14: 1660 .5s 1620 2s still accelerating at end
+
+control15: 1660 .6s 1620 2s very very slight yaw at start
+control16: 1650 .5s 1615 2s .5s to reach .92 m/s :)
+control17: 1650 .5s 1620 2s still accelerating
+control18: 1650 .7s 1620 2s decelerates then acelerates
+control19: 1650 .8s 1620 2s overshoot then stabilize at 1.13 after 1.2s
+
+control20: 1650 .6s 1618 2s only got to .8m/s in .5s
+control21: 1660 .6s 1618 2s overshoot then slow down
+control22: 1660 .5s 1618 2s overshoot then start to mellow out?
+control23: 1660 .4s 1618 2s seems to level out at .92s?
+control24: 1660 .4s 1620 2s still accelerating
+control25: 1660 .4s 1619 2s still accelerating
+control26: 1660 .4s 1618 2s still slightly accelerating
+
+control27: 1660 .45s 1618 2s wtf
+control28: 1660 .45s 1618 2s remote was on, wtf does this affect it
+control29: 1660 .45s 1618 2s ~1m/s after .5s roughly, may be slightly accelerating at end?
+control30: 1660	.25s 1600 3s overshot then leveled out after ~1.5s
+control31: 1660 .2s 1600 4s looks good for .5m/s is it slightly accelerating at the end?
+conbtrol32: 1660 .2s 1600 5s didn't make it this time?
+
+control33: 1625 .5s 1600 4s is it accelerating at end, looks good otherwise :)
+control34: 1625 .5s 1595 4s looks like its decelerating at end
+control35: 1625 .5s 1597 4s i think it ignored my command, but i'm not recording input
+control36: 1625 .5s 1597 4s need to understand how this thing sends and recieves messages
+control37: 1625 .5s 1597 4s looks the same as above 
+
+control_1597_1: 1625 .5s 1597 4s recording encoder data and inputs. first attempt I swear it barely moved. turned remote on/off and it looks ok. left remote off
+control_1597_2: 1625 .5s 1597 4s recording encoder data and inputs. has 10s still data at beginning.
+control_1597_3: 1625 .5s 1597 4s recording encoder data and inputs.
+
+control_1615_1: 1660 .4s 1615 2s calibration data at beginning
+control_1615_2: 1660 .4s 1615 2s
+control_1615_3: 1660 .4s 1615 2s
+
+control_1620_1: 1660 .6s 1620 2s
+control_1620_2: 1660 .6s 1620 2s
+control_1620_3: 1660 .6s 1620 2s
+
+control_1600_1: 1625 .5s 1600 4s
+control_1600_2: 1625 .5s 1600 4s
+control_1600_3: 1625 .5s 1600 4s
