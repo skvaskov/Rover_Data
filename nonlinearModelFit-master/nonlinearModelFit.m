@@ -64,9 +64,9 @@ classdef nonlinearModelFit
            end
            
            % Restructure data, input, and time
-           data = cell2mat(data_in) ;
-           input = cell2mat(input_in) ;
-           t = cell2mat(t_in) ;
+           data = cell2mat(data_in);
+           input = cell2mat(input_in);
+           t = cell2mat(t_in);
            dt = [diff(t_in{1}),0] ;
            for idx = 2:Ntrials
                dt = [dt, diff(t_in{idx}), 0] ;

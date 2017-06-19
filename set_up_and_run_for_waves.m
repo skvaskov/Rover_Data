@@ -1,7 +1,7 @@
 clear all
 clc
 datastruct = load('may25_tests.mat') ;
-tarray=["steer2","steer4"];
+tarray={'steer2','steer4'};
 testgradient=1;
 data = {} ;
 input = {} ;
@@ -10,7 +10,7 @@ start=250;
 done=800;
 
 for idx = 1:length(tarray)
-    trial = datastruct.(['processed_',char(tarray(idx))]) ;
+    trial = datastruct.(['processed_',tarray{idx}]) ;
     data{idx} = trial([2,3,20,10,26],start:done);
     input{idx} = [steeringmodel(trial(32,start:done));trial(8,start:done)];
     t{idx} = trial(1,start:done);
