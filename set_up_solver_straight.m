@@ -24,13 +24,7 @@ for idx = 1:1:12
     t{count} = time'; 
     count=count+1;
 end
-% for idx = 2:13
-%     [time,x,y,psi,vx,vy,w,throttle,steering] = mocap_data(data,idx,.2);
-%     statedata{count} = vx';
-%     input{count} = throttle';
-%     t{count} = time'; 
-%     count=count+1;
-% end
+
 %masses of rover components: rover 2.470 kg, floureon battery 0.289 kg, lrp
 %battery 0.257 kg, traxx battery 0.260 kg
 %esitmate for the lower bound of lf: .1585
